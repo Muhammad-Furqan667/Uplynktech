@@ -160,17 +160,8 @@ export default function Navbar() {
       <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
         <ul className="mobile-nav-links">
           <li><Link to="/services">Services</Link></li>
-          <li><Link to="/services/engineering" className="mobile-sub-link">— Core Engineering</Link></li>
-          <li><Link to="/services/ai" className="mobile-sub-link">— Intelligent Automation</Link></li>
-          <li><Link to="/services/growth" className="mobile-sub-link">— Market Dominance</Link></li>
           <li><Link to="/projects">Projects</Link></li>
-          <li><Link to="/projects/ai-ml" className="mobile-sub-link">— AI / ML Projects</Link></li>
-          <li><Link to="/projects/web-dev" className="mobile-sub-link">— Web Development</Link></li>
-          <li><Link to="/projects/graphic-design" className="mobile-sub-link">— Graphic Design</Link></li>
           <li><Link to="/courses">Academy</Link></li>
-          <li><Link to="/courses/ai-ml" className="mobile-sub-link">— AI / ML Course</Link></li>
-          <li><Link to="/courses/web-dev" className="mobile-sub-link">— Web Dev Course</Link></li>
-          <li><Link to="/courses/graphic-design" className="mobile-sub-link">— Design Course</Link></li>
           <li><Link to="/team">Team</Link></li>
           <li><Link to="/auth/login" className="mobile-signin-link">Sign In</Link></li>
           <li><Link to="/consultation" className="mobile-consult-link">Consultation</Link></li>

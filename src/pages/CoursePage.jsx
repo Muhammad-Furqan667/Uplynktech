@@ -337,7 +337,7 @@ export default function CoursePage() {
         <div className="cp-container">
           <p className="cp-section-eyebrow">Pricing</p>
           <h2 className="cp-section-title">Simple, Transparent Pricing</h2>
-          <div className="cp-pricing-grid">
+          <div className={`cp-pricing-grid pricing-grid-${(course.pricing || []).length}`}>
             {(course.pricing || []).map((plan, i) => {
               // Standardize features as an array
               const featuresList = Array.isArray(plan.features) 
@@ -380,81 +380,89 @@ export default function CoursePage() {
       {/* APPLY FORM */}
       <section className="cp-section cp-apply-section" id="cp-apply">
         <div className="cp-container">
-          <p className="cp-section-eyebrow">Enrollment</p>
-          <h2 className="cp-section-title">Apply for This Course</h2>
-          {submitted ? (
-            <div className="cp-success-msg">
-              <span className="cp-success-icon">🎉</span>
-              <h3>Application Received!</h3>
-              <p>Thanks, <strong>{form.name}</strong>! We'll reach out to <strong>{form.email}</strong> within 24 hours with next steps.</p>
-              <button onClick={() => setSubmitted(false)} className="cp-try-again">Submit Another</button>
-            </div>
-          ) : (
-            <form className="cp-apply-form" onSubmit={handleSubmit}>
-              {rateLimitMsg && (
-                <div className="rate-limit-notice" style={{ gridColumn: 'span 2', marginBottom: '1.5rem' }}>
-                  {rateLimitMsg}
+          <div className="cp-section-header-centered">
+            <p className="cp-section-eyebrow">Enrollment</p>
+            <h2 className="cp-section-title">Apply for This Course</h2>
+          </div>
+
+          <div className="cp-apply-card">
+            {submitted ? (
+              <div className="cp-success-msg">
+                <span className="cp-success-icon">🎉</span>
+                <h3>Application Received!</h3>
+                <p>Thanks, <strong>{form.name}</strong>! We'll reach out to <strong>{form.email}</strong> within 24 hours with next steps.</p>
+                <button onClick={() => setSubmitted(false)} className="cp-try-again">Submit Another</button>
+              </div>
+            ) : (
+              <form className="cp-apply-form" onSubmit={handleSubmit}>
+                {rateLimitMsg && (
+                  <div className="rate-limit-notice">
+                    {rateLimitMsg}
+                  </div>
+                )}
+                <div className="cp-form-row">
+                  <div className="cp-form-group">
+                    <label>Full Name *</label>
+                    <input
+                      type="text"
+                      placeholder="Your full name"
+                      required
+                      value={form.name}
+                      onChange={e => setForm({ ...form, name: e.target.value })}
+                    />
+                  </div>
+                  <div className="cp-form-group">
+                    <label>Email Address *</label>
+                    <input
+                      type="email"
+                      placeholder="you@example.com"
+                      required
+                      value={form.email}
+                      onChange={e => setForm({ ...form, email: e.target.value })}
+                    />
+                  </div>
                 </div>
-              )}
-              <div className="cp-form-row">
+                <div className="cp-form-row">
+                  <div className="cp-form-group">
+                    <label>Phone Number</label>
+                    <input
+                      type="tel"
+                      placeholder="+92 3XX XXXXXXX"
+                      value={form.phone}
+                      onChange={e => setForm({ ...form, phone: e.target.value })}
+                    />
+                  </div>
+                  <div className="cp-form-group">
+                    <label>Your Background</label>
+                    <select
+                      value={form.background}
+                      onChange={e => setForm({ ...form, background: e.target.value })}
+                    >
+                      <option value="beginner">Complete Beginner</option>
+                      <option value="some">Some Experience</option>
+                      <option value="intermediate">Intermediate Skills</option>
+                      <option value="professional">Working Professional</option>
+                    </select>
+                  </div>
+                </div>
                 <div className="cp-form-group">
-                  <label>Full Name *</label>
-                  <input
-                    type="text"
-                    placeholder="Your full name"
-                    required
-                    value={form.name}
-                    onChange={e => setForm({ ...form, name: e.target.value })}
+                  <label>Why do you want to join? (Optional)</label>
+                  <textarea
+                    rows={4}
+                    placeholder="Tell us about your goals and what you hope to achieve..."
+                    value={form.message}
+                    onChange={e => setForm({ ...form, message: e.target.value })}
                   />
                 </div>
-                <div className="cp-form-group">
-                  <label>Email Address *</label>
-                  <input
-                    type="email"
-                    placeholder="you@example.com"
-                    required
-                    value={form.email}
-                    onChange={e => setForm({ ...form, email: e.target.value })}
-                  />
+                <div className="cp-form-footer">
+                  <button type="submit" className="cp-submit-btn" disabled={loading}>
+                    {loading ? 'Processing...' : 'Submit application'} <FiSend />
+                  </button>
+                  <p className="cp-privacy-hint">Secure application. Guaranteed 24-hour response.</p>
                 </div>
-              </div>
-              <div className="cp-form-row">
-                <div className="cp-form-group">
-                  <label>Phone Number</label>
-                  <input
-                    type="tel"
-                    placeholder="+92 3XX XXXXXXX"
-                    value={form.phone}
-                    onChange={e => setForm({ ...form, phone: e.target.value })}
-                  />
-                </div>
-                <div className="cp-form-group">
-                  <label>Your Background</label>
-                  <select
-                    value={form.background}
-                    onChange={e => setForm({ ...form, background: e.target.value })}
-                  >
-                    <option value="beginner">Complete Beginner</option>
-                    <option value="some">Some Experience</option>
-                    <option value="intermediate">Intermediate Skills</option>
-                    <option value="professional">Working Professional</option>
-                  </select>
-                </div>
-              </div>
-              <div className="cp-form-group">
-                <label>Why do you want to join? (Optional)</label>
-                <textarea
-                  rows={4}
-                  placeholder="Tell us about your goals and what you hope to achieve..."
-                  value={form.message}
-                  onChange={e => setForm({ ...form, message: e.target.value })}
-                />
-              </div>
-              <button type="submit" className="cp-submit-btn" disabled={loading}>
-                {loading ? 'Processing Application...' : 'Submit Application'} <FiSend />
-              </button>
-            </form>
-          )}
+              </form>
+            )}
+          </div>
         </div>
       </section>
 

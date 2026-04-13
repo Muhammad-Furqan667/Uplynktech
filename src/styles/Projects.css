@@ -342,7 +342,7 @@
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: #000000;
 }
 
 .cat-nav-card:hover {

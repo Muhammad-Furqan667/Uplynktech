@@ -1,29 +1,51 @@
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
 import './Testimonials.css'
 
 export default function Testimonials() {
-  const testimonials = [
-    {
-      id: 1,
-      quote: "UPLYNK didn't just build our internal platform; they overhauled our entire cloud architecture. Their unified engineering team acts like a true extension of our own.",
-      author: "Marcus Vance",
-      title: "Chief Technology Officer",
-      company: "Aether Dynamics"
-    },
-    {
-      id: 2,
-      quote: "We were burning cash on inefficient operational workflows. UPLYNK integrated a custom LLM solution that instantly automated 40% of our tier-1 support.",
-      author: "Elena Rostova",
-      title: "VP of Operations",
-      company: "Nexus Medical Systems"
-    },
-    {
-      id: 3,
-      quote: "The rigor and pure technical talent UPLYNK brings is unmatched. Their academy pipeline ensures they always have the sharpest minds executing our mission-critical sprints.",
-      author: "Julian Wright",
-      title: "Director of Engineering",
-      company: "FinTech Global"
+  const [testimonials, setTestimonials] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchTestimonials() {
+      try {
+        const { data, error } = await supabase
+          .from('display_reviews')
+          .select('*')
+          .eq('is_featured', true)
+          .order('created_at', { ascending: false })
+
+        if (error) throw error
+        setTestimonials(data || [])
+      } catch (err) {
+        console.error('Error fetching testimonials:', err)
+      } finally {
+        setLoading(false)
+      }
     }
-  ]
+
+    fetchTestimonials()
+
+    // Realtime subscription
+    const channel = supabase
+      .channel('public:display_reviews')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'display_reviews' }, (payload) => {
+        fetchTestimonials()
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
+
+  if (loading && testimonials.length === 0) {
+    return null // or a skeleton loader
+  }
+
+  if (testimonials.length === 0) {
+    return null
+  }
 
   return (
     <section className="testimonials">
@@ -54,7 +76,7 @@ export default function Testimonials() {
                 </div>
                 <div className="testimonial-meta">
                   <h4 className="testimonial-name">{item.author}</h4>
-                  <p className="testimonial-title">{item.title}, {item.company}</p>
+                  <p className="testimonial-title">{item.title}{item.company ? `, ${item.company}` : ''}</p>
                 </div>
               </div>
             </div>

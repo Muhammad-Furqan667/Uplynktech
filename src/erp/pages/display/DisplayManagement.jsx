@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { FiUsers, FiBriefcase, FiGrid, FiLayers, FiBookOpen } from 'react-icons/fi'
+import { FiUsers, FiBriefcase, FiGrid, FiLayers, FiBookOpen, FiMessageSquare } from 'react-icons/fi'
 import ManageProjects from './ManageProjects'
 import ManageCategories from './ManageCategories'
 import ManageTeam from './ManageTeam'
 import ManageServices from './ManageServices'
 import ManageCourses from './ManageCourses'
+import ManageReviews from './ManageReviews'
 import './DisplayManagement.css'
 
 const DisplayManagement = () => {
@@ -20,6 +21,7 @@ const DisplayManagement = () => {
     { id: 'team', label: 'Team', icon: FiUsers, component: ManageTeam },
     { id: 'services', label: 'Services', icon: FiLayers, component: ManageServices },
     { id: 'courses', label: 'Courses', icon: FiBookOpen, component: ManageCourses },
+    { id: 'reviews', label: 'Reviews', icon: FiMessageSquare, component: ManageReviews },
   ]
 
   return (
