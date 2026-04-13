@@ -1,0 +1,415 @@
+.academy-page {
+  background-color: var(--bg-primary);
+  min-height: calc(100vh - 80px);
+  margin-top: 80px;
+  overflow: hidden;
+}
+
+.academy-loading {
+  display: flex;
+  flex-direction: column;
+  items-center: center;
+  justify-content: center;
+  padding: 10rem 0;
+  text-align: center;
+  color: var(--text-secondary);
+  gap: 2rem;
+}
+
+.course-status-tag {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+}
+
+.course-status-tag.ongoing { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+.course-status-tag.coming-soon { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.course-status-tag.waitlist { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+.course-start-date {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+/* Header Section */
+.academy-header-section {
+  padding: 8rem 2rem 4rem;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.academy-eyebrow {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.6rem 1.4rem;
+  border-radius: 30px;
+  margin-bottom: 2rem;
+  background-color: var(--bg-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.academy-main-title {
+  font-size: 4.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+  letter-spacing: -2px;
+}
+
+.academy-main-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Academy Tracks Container */
+.academy-tracks-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 2rem 8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.academy-track {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 4rem;
+}
+
+.track-header {
+  margin-bottom: 3rem;
+  max-width: 700px;
+}
+
+.track-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+}
+
+.track-description {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Course Grid */
+.track-courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.5rem;
+}
+
+.academy-course-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.academy-course-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--text-primary);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+.academy-course-header {
+  margin-bottom: 1.5rem;
+}
+
+.course-level-tag {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+}
+
+.course-card-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.course-card-desc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  flex-grow: 1;
+}
+
+.course-card-meta {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.meta-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.m-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.m-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.course-card-footer {
+  margin-top: auto;
+}
+
+.enroll-btn-preview {
+  width: 100%;
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 2px solid var(--border-color);
+  padding: 1rem;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.academy-course-card:hover .enroll-btn-preview {
+  background-color: var(--text-primary);
+  color: var(--bg-secondary);
+  border-color: var(--text-primary);
+}
+
+/* Modal Reuse */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: var(--bg-secondary);
+  padding: 3rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem; right: 1.5rem;
+  background: none; border: none; font-size: 28px;
+  cursor: pointer; color: var(--text-secondary);
+}
+
+.modal-message-icon {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.modal-heading {
+  font-size: 1.8rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.modal-text {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.modal-email-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-email-input {
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 15px;
+  background-color: var(--bg-secondary);
+}
+
+.modal-notify-btn {
+  padding: 1rem;
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  border: none;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-notify-btn:hover {
+  background-color: var(--accent-color);
+  color: var(--text-primary);
+}
+
+@media (max-width: 1024px) {
+  .academy-main-title { font-size: 3.5rem; }
+  .academy-track { padding: 3rem 2rem; }
+  .track-courses-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+}
+
+@media (max-width: 768px) {
+  .academy-main-title { font-size: 2.8rem; }
+  .track-title { font-size: 2rem; }
+  .academy-tracks-container { gap: 4rem; padding: 1rem 1.5rem 6rem; }
+  .academy-track { padding: 2rem 1.5rem; }
+  .track-courses-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .academy-main-title { font-size: 2.2rem; }
+  .academy-header-section { padding: 6rem 1.5rem 2rem; }
+  .track-title { font-size: 1.8rem; }
+}
+
+/* =============================================
+   TRACK OVERVIEW CARDS (top of courses page)
+   ============================================= */
+
+.academy-tracks-overview {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .academy-tracks-overview {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+}
+
+.track-overview-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 36px 28px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.track-overview-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--track-color);
+}
+
+.track-overview-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--track-color);
+  box-shadow: var(--shadow-md);
+}
+
+.toc-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toc-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--track-color);
+}
+
+.toc-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.toc-desc {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.65;
+  flex: 1;
+  margin: 0;
+}
+
+.toc-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--track-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: gap 0.2s ease;
+}
+
+.toc-cta:hover { gap: 12px; }
+

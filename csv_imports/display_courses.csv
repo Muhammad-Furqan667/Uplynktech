@@ -1,0 +1,10 @@
+slug,track_name,title,description,duration,level,students,status,start_date,details
+full-stack-web,web-dev,Full Stack Web Engineering,Master React Node.js and complex database architectures. Deploy production-grade applications.,12 weeks,Beginner to Pro,1250,Ongoing,2026-05-01,"{""instructor"": {""name"": ""Affan Siddiqui"", ""title"": ""Full Stack Lead"", ""bio"": ""8+ years shipping production applications...""}}"
+advanced-react,web-dev,Advanced React Patterns,Deep dive into state management performance rendering micro-frontends and custom hooks.,6 weeks,Advanced,820,Coming Soon,2026-06-15,"{}"
+cloud-computing,web-dev,Cloud Computing & AWS Architecture,Build secure and auto-scale infrastructure using EC2 Lambda S3 and Kubernetes.,8 weeks,Intermediate,580,Ongoing,2026-05-10,"{}"
+ai-fundamentals,ai-ml,Machine Learning Fundamentals,Learn Python TensorFlow and scikit-learn to build predictive models and analyze datasets.,10 weeks,Intermediate,940,Ongoing,2026-05-01,"{""curriculum"": [{""week"": ""01-02"", ""topic"": ""Python Mastery"", ""details"": ""...""}]}"
+deep-learning,ai-ml,Deep Learning & Computer Vision,Construct CNNs RNNs and object detection systems capable of real-time video analysis.,14 weeks,Advanced,650,Waitlist,2026-07-01,"{}"
+data-analytics,ai-ml,Data Analytics & Visualization,Extract business logic using SQL Python Tableau and PowerBI. Tell stories with data.,8 weeks,Beginner,1420,Ongoing,2026-05-20,"{}"
+ui-ux-design,graphic-design,UI/UX Design Essentials,Learn Figma design psychology wireframing and user-testing to craft beautiful interfaces.,8 weeks,Beginner,1100,Ongoing,2026-05-05,"{}"
+digital-marketing,graphic-design,Digital Brand & Growth Strategy,Master organic funnels paid acquisition and viral social media architectures.,6 weeks,Beginner,890,Coming Soon,2026-06-01,"{}"
+shopify-mastery,graphic-design,Shopify E-Commerce Mastery,End-to-end framework for launching converting and scaling automated digital storefronts.,7 weeks,Intermediate,720,Ongoing,2026-05-15,"{}"

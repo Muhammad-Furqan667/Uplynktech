@@ -1,0 +1,5 @@
+[project]
+id = "bnynucuoakmqazyikjtt"
+
+[functions.send-contact-email]
+verify_jwt = false # We want the contact form to be able to trigger this (usually via a webhook)

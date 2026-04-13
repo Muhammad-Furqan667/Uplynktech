@@ -1,0 +1,235 @@
+.aboutus-page {
+  padding-bottom: 8rem;
+  background-color: var(--bg-primary);
+}
+
+.aboutus-hero {
+  padding: 180px 0 100px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 6rem;
+  text-align: center;
+}
+
+.aboutus-hero-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.elite-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--accent-color);
+  margin-bottom: 2rem;
+  background-color: var(--bg-primary);
+  padding: 0.6rem 1.4rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.hero-title {
+  font-size: 5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -3.5px;
+  margin-bottom: 2rem;
+}
+
+.hero-title .highlight {
+  color: var(--accent-color);
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  line-height: 1.6;
+  margin-bottom: 4rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* --- Mission & Vision Section (Modules) --- */
+.mission-vision-section {
+  margin-bottom: 10rem;
+}
+
+.mission-vision-section .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.mission-flex {
+  display: flex;
+  gap: 3rem;
+}
+
+.mission-module {
+  flex: 1;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 4rem;
+  border-radius: 4px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.mission-module.active {
+  background-color: white;
+  border-color: var(--text-primary);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.05);
+}
+
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.module-icon {
+  font-size: 2rem;
+  color: var(--text-primary);
+}
+
+.module-index {
+  font-family: serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--accent-color);
+}
+
+.module-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  letter-spacing: -1.5px;
+}
+
+.module-text {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* --- Core Values (HUD Cards) --- */
+.values-section {
+  margin-bottom: 10rem;
+}
+
+.values-section .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-intro {
+  margin-bottom: 5rem;
+}
+
+.section-headline {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+}
+
+.section-sub {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.values-hud-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.value-hud-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 3rem 2rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.value-hud-card:hover {
+  border-color: var(--text-primary);
+  transform: translateY(-5px);
+}
+
+.v-card-top {
+  margin-bottom: 2rem;
+}
+
+.v-icon {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+}
+
+.v-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.v-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* --- Final CTA --- */
+.about-final-cta .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.cta-enclosure {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 6rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cta-enclosure h2 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  max-width: 600px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1200px) {
+  .hero-title { font-size: 4rem; }
+  .mission-flex { flex-direction: column; }
+  .values-hud-grid { grid-template-columns: repeat(2, 1fr); }
+  .cta-enclosure { flex-direction: column; text-align: center; gap: 4rem; }
+  .cta-enclosure h2 { font-size: 2.5rem; }
+}
+
+@media (max-width: 768px) {
+  .hero-title { font-size: 3rem; }
+  .hero-actions { flex-direction: column; width: 100%; }
+  .hero-actions button { width: 100%; }
+  .module-title { font-size: 2rem; }
+  .values-hud-grid { grid-template-columns: 1fr; }
+}

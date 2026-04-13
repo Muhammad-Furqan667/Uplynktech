@@ -1,0 +1,125 @@
+.engagement-models {
+  background-color: var(--bg-secondary);
+  padding: 8rem 2rem;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.engagement-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.engagement-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.engagement-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1.2rem;
+  border-radius: 30px;
+  margin-bottom: 1.5rem;
+  background-color: var(--bg-primary);
+}
+
+.engagement-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  letter-spacing: -1.5px;
+}
+
+.engagement-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.engagement-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+}
+
+.engagement-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s ease;
+  border-radius: 8px;
+}
+
+.engagement-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+  border-color: #d1d1d1;
+}
+
+.model-icon-box {
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+}
+
+.model-icon {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  stroke-width: 1.5px;
+}
+
+.model-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
+}
+
+.model-desc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  flex-grow: 1;
+}
+
+.model-best-for {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.model-best-for span {
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-right: 5px;
+}
+
+@media (max-width: 1024px) {
+  .engagement-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .engagement-title { font-size: 3rem; }
+}
+
+@media (max-width: 768px) {
+  .engagement-models { padding: 5rem 1.5rem; }
+  .engagement-title { font-size: 2.5rem; }
+  .engagement-card { padding: 2.5rem; }
+}

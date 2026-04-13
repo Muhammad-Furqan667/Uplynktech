@@ -1,0 +1,169 @@
+/* Academy Advantage Section Cleanup */
+.why-choose-courses {
+  background-color: var(--bg-primary);
+  padding: 8rem 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.why-choose-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header */
+.why-choose-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.academy-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1.2rem;
+  border-radius: 30px;
+  margin-bottom: 1.5rem;
+  background-color: var(--bg-secondary);
+}
+
+.why-choose-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  letter-spacing: -2px;
+}
+
+.why-choose-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Highlights Grid */
+.highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 6rem;
+}
+
+.highlight-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.highlight-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+  border-color: #d1d1d1;
+}
+
+/* Icon Box */
+.highlight-icon-box {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+}
+
+.highlight-section-icon {
+  font-size: 2.2rem;
+  color: var(--text-primary);
+  stroke-width: 1.5px;
+}
+
+/* Text Content */
+.highlight-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+}
+
+.highlight-description {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  flex-grow: 1;
+}
+
+.card-aesthetic-line {
+  width: 0;
+  height: 3px;
+  background-color: var(--text-primary);
+  margin-top: 2rem;
+  transition: width 0.4s ease;
+}
+
+.highlight-card:hover .card-aesthetic-line {
+  width: 60px;
+}
+
+/* Unified Stats Section */
+.academy-stats-grid {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  padding: 3rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.academy-stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat-value {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -1.5px;
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .highlights-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .highlight-card { padding: 2.5rem; }
+}
+
+@media (max-width: 1024px) {
+  .why-choose-title { font-size: 3rem; }
+  .academy-stats-grid { flex-direction: column; gap: 3rem; }
+}
+
+@media (max-width: 768px) {
+  .why-choose-courses { padding: 5rem 1.5rem; }
+  .why-choose-title { font-size: 2.5rem; }
+  .highlights-grid { grid-template-columns: 1fr; }
+  .highlight-card { padding: 2rem; }
+}
