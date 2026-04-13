@@ -7,6 +7,8 @@ const ManageCourses = () => {
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState(null)
+  const [instructorFile, setInstructorFile] = useState(null)
+  const [previewUrl, setPreviewUrl] = useState(null)
 
   const initialForm = {
     slug: '', track_name: 'AI-ML', title: '', description: '',
@@ -16,7 +18,7 @@ const ManageCourses = () => {
       trackDescription: '',
       tagline: 'Master your future.',
       nextBatch: 'Coming Soon',
-      instructor: { name: '', title: '', bio: '' },
+      instructor: { name: '', title: '', bio: '', avatar_url: '' },
       curriculum: [],
       whyChoose: [],
       pricing: [],
@@ -29,6 +31,19 @@ const ManageCourses = () => {
     fetchCourses()
   }, [])
 
+  // Clean up object URLs to prevent memory leaks
+  useEffect(() => {
+    if (!instructorFile) {
+      setPreviewUrl(null)
+      return
+    }
+    const url = URL.createObjectURL(instructorFile)
+    setPreviewUrl(url)
+    return () => {
+      if (url) URL.revokeObjectURL(url)
+    }
+  }, [instructorFile])
+
   const fetchCourses = async () => {
     try {
       const { data } = await supabase.from('display_courses').select('*').order('created_at', { ascending: false })
@@ -37,10 +52,44 @@ const ManageCourses = () => {
     finally { setLoading(false) }
   }
 
+  const uploadInstructorImage = async (file, slug) => {
+    const fileExt = file.name.split('.').pop()
+    const fileName = `${slug}-${Date.now()}.${fileExt}`
+    const filePath = `avatars/${fileName}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('Instructors image')
+      .upload(filePath, file)
+
+    if (uploadError) throw uploadError
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('Instructors image')
+      .getPublicUrl(filePath)
+
+    return publicUrl
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const { id, created_at, updated_at, ...cleanData } = formData
+      let currentInstructor = { ...(formData.details?.instructor || initialForm.details.instructor) }
+
+      // 1. Handle Instructor Image Upload
+      if (instructorFile) {
+        const publicUrl = await uploadInstructorImage(instructorFile, formData.slug || 'temp')
+        currentInstructor.avatar_url = publicUrl
+      }
+
+      const postData = {
+        ...formData,
+        details: {
+          ...formData.details,
+          instructor: currentInstructor
+        }
+      }
+
+      const { id, created_at, updated_at, ...cleanData } = postData
 
       if (editingId) {
         const { error } = await supabase.from('display_courses').update(cleanData).eq('id', editingId)
@@ -51,11 +100,13 @@ const ManageCourses = () => {
       }
       fetchCourses()
       setFormData(initialForm)
+      setInstructorFile(null)
       setEditingId(null)
     } catch (err) { console.error('Courses persistence error:', err.message) }
   }
 
   const handleEdit = (course) => {
+    setInstructorFile(null)
     setEditingId(course.id)
     setFormData({
       ...course,
@@ -177,24 +228,79 @@ const ManageCourses = () => {
 
             {/* INSTRUCTOR SUB-SECTION */}
             <div className="form-group" style={{ gridColumn: 'span 2', background: 'rgba(212,175,55,0.02)', padding: '1rem', borderRadius: '8px' }}>
-              <label style={{ color: '#d4af37' }}>Lead Instructor Profile</label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                <label style={{ color: '#d4af37', margin: 0 }}>Lead Instructor Profile</label>
+              </div>
               <div className="form-grid" style={{ marginTop: '0.5rem' }}>
                 <input
                   placeholder="Instructor Name"
                   value={formData.details?.instructor?.name || ''}
-                  onChange={e => setFormData({ ...formData, details: { ...formData.details, instructor: { ...formData.details.instructor, name: e.target.value } } })}
+                  onChange={e => setFormData({ ...formData, details: { ...formData.details, instructor: { ...(formData.details?.instructor || {}), name: e.target.value } } })}
                 />
                 <input
                   placeholder="Professional Title"
                   value={formData.details?.instructor?.title || ''}
-                  onChange={e => setFormData({ ...formData, details: { ...formData.details, instructor: { ...formData.details.instructor, title: e.target.value } } })}
+                  onChange={e => setFormData({ ...formData, details: { ...formData.details, instructor: { ...(formData.details?.instructor || {}), title: e.target.value } } })}
                 />
+                
+                <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                  <label style={{ fontSize: '0.75rem', opacity: 0.8 }}>Instructor Photo (Upload or Paste Link)</label>
+                  <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+                    <div style={{ flex: 1 }}>
+                      <input 
+                        placeholder="Paste image URL here..."
+                        value={formData.details?.instructor?.avatar_url || ''}
+                        onChange={e => setFormData({ 
+                          ...formData, 
+                          details: { 
+                            ...formData.details, 
+                            instructor: { ...(formData.details?.instructor || {}), avatar_url: e.target.value } 
+                          } 
+                        })}
+                        style={{ marginBottom: '8px' }}
+                      />
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        onChange={(e) => setInstructorFile(e.target.files[0])}
+                        style={{ background: 'transparent', border: '1px dashed #d4af3733', padding: '10px', width: '100%' }}
+                      />
+                    </div>
+                    
+                    {/* LIVE PREVIEW WINDOW */}
+                    <div className="live-avatar-preview" style={{ 
+                      width: '100px', 
+                      height: '100px', 
+                      borderRadius: '12px', 
+                      border: '2px solid #d4af37',
+                      overflow: 'hidden',
+                      background: '#000',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      {(previewUrl || formData.details?.instructor?.avatar_url) ? (
+                        <img 
+                          src={previewUrl || formData.details?.instructor?.avatar_url} 
+                          alt="Preview" 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                          onError={(e) => { e.target.style.display = 'none'; }}
+                        />
+                      ) : (
+                        <span style={{ fontSize: '10px', opacity: 0.5, textAlign: 'center' }}>No Image</span>
+                      )}
+                    </div>
+                  </div>
+                  {instructorFile && <small style={{ color: '#d4af37' }}>New Upload: {instructorFile.name}</small>}
+                </div>
+
                 <textarea
                   placeholder="Short Professional Bio"
                   style={{ gridColumn: 'span 2' }}
                   rows="2"
                   value={formData.details?.instructor?.bio || ''}
-                  onChange={e => setFormData({ ...formData, details: { ...formData.details, instructor: { ...formData.details.instructor, bio: e.target.value } } })}
+                  onChange={e => setFormData({ ...formData, details: { ...formData.details, instructor: { ...(formData.details?.instructor || {}), bio: e.target.value } } })}
                 />
               </div>
             </div>
@@ -238,7 +344,19 @@ const ManageCourses = () => {
             <button type="submit" className="primary-btn gold-btn">
               {editingId ? <FiCheck /> : <FiPlus />} {editingId ? 'Push Curriculum Changes' : 'Open Course Enrollment'}
             </button>
-            {editingId && <button type="button" className="icon-btn" onClick={() => { setEditingId(null); setFormData(initialForm) }}>Cancel</button>}
+            {editingId && (
+              <button 
+                type="button" 
+                className="icon-btn" 
+                onClick={() => { 
+                  setEditingId(null); 
+                  setInstructorFile(null);
+                  setFormData(initialForm);
+                }}
+              >
+                Cancel
+              </button>
+            )}
           </div>
         </form>
       </section>

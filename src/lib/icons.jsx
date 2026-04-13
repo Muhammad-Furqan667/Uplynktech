@@ -2,26 +2,27 @@ import * as Icons from 'react-icons/fi'
 
 /**
  * ACADEMY_TRACKS
- * Defines the mapping between track names, marketing slugs, and icons.
+ * Defines the mapping between track names (DB Keys), marketing slugs (URLs), and icons.
+ * The keys must match the 'track_name' column in the supabase display_courses table.
  */
 export const ACADEMY_TRACKS = {
   'AI-ML': {
-    slug: 'deep',
+    slug: 'ai-ml',
     icon: 'FiCpu',
     color: '#7c3aed',
     displayName: 'AI & Machine Learning'
   },
   'Graphic-Design': {
-    slug: 'digital',
+    slug: 'graphic-design',
     icon: 'FiPenTool',
     color: '#ec4899',
     displayName: 'Creative Design'
   },
-  'Web-development': {
-    slug: 'advanced',
+  'Web-Development': {
+    slug: 'web-dev',
     icon: 'FiGlobe',
     color: '#0ea5e9',
-    displayName: 'Web Engineering'
+    displayName: 'Web-Development'
   }
 }
 

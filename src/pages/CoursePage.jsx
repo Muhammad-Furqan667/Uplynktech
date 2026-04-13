@@ -282,7 +282,11 @@ export default function CoursePage() {
             <div className="cp-instructor-card">
               <p className="cp-instr-label">Your Instructor</p>
               <div className="cp-instr-avatar">
-                {(course.instructor?.name || 'AI').split(' ').map(n => n[0]).join('')}
+                {course.instructor?.avatar_url ? (
+                  <img src={course.instructor.avatar_url} alt={course.instructor.name} className="instr-img" />
+                ) : (
+                  (course.instructor?.name || 'AI').split(' ').map(n => n[0]).join('')
+                )}
               </div>
               <h3 className="cp-instr-name">{course.instructor?.name || 'Academy Expert'}</h3>
               <p className="cp-instr-title">{course.instructor?.title || 'Lead Instructor'}</p>
