@@ -55,3 +55,5 @@ export const resolveIcon = (iconName) => {
   const Icon = Icons[iconName]
   return Icon || Icons.FiHelpCircle
 }
+
+export const FI_ICON_NAMES = Object.keys(Icons).filter(name => name.startsWith('Fi'))

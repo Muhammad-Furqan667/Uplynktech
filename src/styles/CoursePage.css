@@ -657,3 +657,156 @@
   gap: 20px;
   color: var(--text-primary);
 }
+/* =============================================
+   CATEGORY / TRACK VIEW
+   ============================================= */
+
+.category-view .track-hero {
+  background: var(--bg-secondary);
+  border-bottom: 2px solid var(--track-color);
+  padding: 120px 24px 80px;
+}
+
+.category-view .cp-hero-overlay {
+  background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+}
+
+.track-icon-badge {
+  width: 90px;
+  height: 90px;
+  background: var(--bg-primary);
+  border: 1px solid var(--track-color);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 2rem;
+  font-size: 2.5rem;
+  color: var(--track-color);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  transform: rotate(-5deg);
+}
+
+.track-grid-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.track-section-desc {
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 1rem auto;
+  font-size: 1.1rem;
+}
+
+.track-courses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.track-course-row {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 180px 1fr 200px;
+  gap: 2rem;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.track-course-row:hover {
+  transform: scale(1.02);
+  border-color: var(--track-color);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  background: #fff;
+}
+
+.tc-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tc-level {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--track-color);
+  letter-spacing: 1px;
+}
+
+.tc-status {
+  font-size: 0.65rem;
+  background: rgba(34, 197, 94, 0.1);
+  color: #166534;
+  padding: 4px 12px;
+  border-radius: 100px;
+  width: fit-content;
+  font-weight: 700;
+}
+
+.tc-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.tc-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.tc-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tc-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.tc-action {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.track-course-row:hover .tc-action {
+  background: var(--track-color);
+  color: #fff;
+  border-color: var(--track-color);
+}
+
+@media (max-width: 900px) {
+  .track-course-row {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  .tc-meta, .tc-status, .tc-pill, .tc-action {
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+}

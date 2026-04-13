@@ -1,5 +1,61 @@
-import React from 'react'
-import { FiPlus, FiTrash2, FiLayers } from 'react-icons/fi'
+import React, { useState } from 'react'
+import { FiPlus, FiTrash2, FiLayers, FiSearch, FiImage } from 'react-icons/fi'
+import { FI_ICON_NAMES, resolveIcon } from '../../../lib/icons'
+
+/**
+ * IconInput Sub-component
+ * Special handler for searchable icons and custom URLs
+ */
+const IconInput = ({ value, onChange, placeholder }) => {
+  const [searchTerm, setSearchTerm] = useState('')
+  const filteredIcons = FI_ICON_NAMES.filter(name => 
+    name.toLowerCase().includes(searchTerm.toLowerCase())
+  ).slice(0, 48)
+
+  const IconPreview = resolveIcon(value)
+
+  return (
+    <div className="icon-picker-suite">
+      <div className="icon-main-controls">
+        <div className="icon-preview-container">
+          <IconPreview />
+        </div>
+        <div className="icon-input-stack">
+          <div className="icon-value-input">
+            <input 
+              type="text" 
+              value={value || ''} 
+              onChange={(e) => onChange(e.target.value)}
+              placeholder={placeholder || 'FiName or URL...'}
+            />
+          </div>
+          <div className="icon-search-searchable">
+            <FiSearch className="search-hint-icon" />
+            <input 
+              type="text" 
+              placeholder="Search Fi Icons..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            {searchTerm && (
+              <div className="icon-results-flyout">
+                {filteredIcons.map(name => (
+                  <div 
+                    key={name} 
+                    className="icon-result-item" 
+                    onClick={() => { onChange(name); setSearchTerm('') }}
+                  >
+                    {name}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 /**
  * DisplayListManager
@@ -62,6 +118,12 @@ const DisplayListManager = ({
                         onChange={(e) => handleUpdateItem(index, field.key, e.target.value)}
                         placeholder={field.placeholder}
                         rows="2"
+                      />
+                    ) : field.type === 'icon' ? (
+                      <IconInput 
+                        value={item[field.key] || ''}
+                        onChange={(val) => handleUpdateItem(index, field.key, val)}
+                        placeholder={field.placeholder}
                       />
                     ) : (
                       <input 

@@ -136,7 +136,7 @@ export default function ServiceDetail() {
           <div className="sd-cta-card">
             <h2 className="sd-cta-title">{details.ctaTitle || 'Ready to Engineer the Future?'}</h2>
             <p className="sd-cta-desc">{details.ctaDesc || 'Let us build something extraordinary together.'}</p>
-            <button className="sd-cta-btn" onClick={() => navigate('/consultation')}>
+            <button className="sd-cta-btn" onClick={() => navigate('/consultation', { state: { sourceService: data.title, serviceSlug: data.slug } })}>
               Request a Strategic Session <FiArrowRight />
             </button>
           </div>

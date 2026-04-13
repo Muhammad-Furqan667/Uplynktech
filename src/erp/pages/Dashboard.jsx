@@ -53,14 +53,27 @@ const Dashboard = () => {
     // Initial fetch
     fetchTasks(true)
 
-    const pollingInterval = setInterval(() => {
-      if (document.visibilityState === 'visible') {
-        fetchTasks(true)
-      }
-    }, 5000)
+    // REALTIME: Subscribe to task changes for instant UI updates
+    const channel = supabase
+      .channel('tasks-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*', 
+          schema: 'public',
+          table: 'tasks',
+          filter: `assignee_id=eq.${user.id}`
+        },
+        () => {
+          fetchTasks(true) // Silent refresh on any change
+        }
+      )
+      .subscribe()
 
-    return () => clearInterval(pollingInterval)
-  }, [])
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [user.id])
 
   const handleTaskCompletion = async () => {
     if (!completionComment.trim()) return

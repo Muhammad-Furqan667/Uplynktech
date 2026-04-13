@@ -32,6 +32,24 @@ const Sidebar = () => {
     { icon: FiSettings, label: 'Settings', path: '/erp/settings', show: profile?.role === 'Admin' },
   ]
 
+  const prefetchData = async (path) => {
+    console.log(`[Sidebar] Prefetching data for: ${path}...`)
+    try {
+      if (path === '/erp/display') {
+        // Prefetch Course/Service data
+        supabase.from('erp_courses').select('*').limit(1).then(() => console.log('[Sidebar] Display data prefetched'))
+      } else if (path === '/erp/team') {
+        // Prefetch Team data
+        supabase.from('profiles').select('id, full_name, role').limit(10).then(() => console.log('[Sidebar] Team data prefetched'))
+      } else if (path === '/erp/subordinates') {
+        // Warming up senior status or RPCs
+        supabase.rpc('has_subordinates', { p_user_id: profile?.id }).then(() => console.log('[Sidebar] Senior data prefetched'))
+      }
+    } catch (err) {
+      // Sliently fail prefetch
+    }
+  }
+
   return (
     <aside className="erp-sidebar">
 
@@ -53,6 +71,7 @@ const Sidebar = () => {
               <Link 
                 to={item.path} 
                 className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
+                onMouseEnter={() => prefetchData(item.path)}
               >
                 <item.icon className="nav-icon" />
                 <span className="nav-label">{item.label}</span>

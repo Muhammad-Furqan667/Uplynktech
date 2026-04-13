@@ -20,15 +20,20 @@ const Subordinates = () => {
     // Initial load
     fetchSubordinates()
 
-    // Setup periodic sync (10s for management visibility)
-    const syncInterval = setInterval(() => {
-      if (document.visibilityState === 'visible') {
-        fetchSubordinates()
-      }
-    }, 10000)
+    // REALTIME: Monitor hierarchy and team structure changes instantly
+    const channel = supabase
+      .channel('subordinates-realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'hierarchy' },
+        () => fetchSubordinates()
+      )
+      .subscribe()
 
-    return () => clearInterval(syncInterval)
-  }, [])
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [user.id])
 
   const fetchSubordinates = async () => {
     try {

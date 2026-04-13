@@ -1,8 +1,13 @@
 import { Outlet } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 import Sidebar from '../components/Sidebar'
 import './ERPLayout.css'
 
 const ERPLayout = () => {
+  const { timeLeft, showTimeoutWarning } = useAuth()
+  const secondsLeft = Math.ceil(timeLeft / 1000)
+  const isPersistent = localStorage.getItem('uplynk_stay_logged_in') === 'true'
+
   return (
     <div className="erp-layout">
       <Sidebar />
@@ -16,9 +21,14 @@ const ERPLayout = () => {
             </div>
             
             <div className="header-status">
-              <div className="status-indicator">
+              <div className={`status-indicator ${showTimeoutWarning ? 'warning' : ''} ${isPersistent ? 'persistent' : ''}`}>
                 <span className="status-dot"></span>
-                <span className="status-text">System Active</span>
+                <span className="status-text">
+                  {isPersistent 
+                    ? 'Session Secure' 
+                    : 'Security Active'
+                  }
+                </span>
               </div>
             </div>
           </div>

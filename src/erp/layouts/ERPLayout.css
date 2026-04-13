@@ -117,3 +117,39 @@
 .erp-content-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--muted);
 }
+
+/* Security Pulse & Adaptive Indicator States */
+.status-indicator.warning {
+  background-color: #fef2f2;
+  border-color: #fee2e2;
+}
+
+.status-indicator.warning .status-dot {
+  background-color: #ef4444;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+  animation: pulseRed 1s infinite;
+}
+
+.status-indicator.warning .status-text {
+  color: #991b1b;
+}
+
+.status-indicator.persistent {
+  background-color: #fffbeb;
+  border-color: #fde68a;
+}
+
+.status-indicator.persistent .status-dot {
+  background-color: #d4af37;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.status-indicator.persistent .status-text {
+  color: #92400e;
+}
+
+@keyframes pulseRed {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}

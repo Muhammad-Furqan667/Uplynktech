@@ -378,11 +378,19 @@ const Mail = () => {
                     <div className="lead-user">
                       <FiUser />
                       <div>
-                        <h4>{lead.full_name}</h4>
+                        <h4>
+                          {lead.full_name}
+                          {lead.meta?.smtp_failed && <span className="lead-status-alert">SMTP OFFLINE</span>}
+                        </h4>
                         <span>{lead.email}</span>
                       </div>
                     </div>
-                    <span className="lead-date">{new Date(lead.created_at).toLocaleDateString()}</span>
+                    <div className="lead-meta-badges">
+                      {lead.meta?.lead_origin && (
+                        <span className="lead-origin-tag">{lead.meta.lead_origin}</span>
+                      )}
+                      <span className="lead-date">{new Date(lead.created_at).toLocaleDateString()}</span>
+                    </div>
                   </div>
                   <div className="lead-body">
                     <div className="lead-item">

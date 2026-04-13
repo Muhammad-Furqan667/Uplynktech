@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useSEO } from '../hooks/useSEO'
 import { supabase } from '../lib/supabase'
 import { ACADEMY_TRACKS, resolveIcon } from '../lib/icons'
+import { checkLeadRateLimit } from '../lib/utils'
 import '../styles/CoursePage.css'
 import {
   FiArrowLeft, FiArrowRight, FiCheck, FiClock,
@@ -22,6 +23,7 @@ export default function CoursePage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', background: 'beginner', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [rateLimitMsg, setRateLimitMsg] = useState(null)
 
   // Identify category mapping
   const categoryMatch = Object.entries(ACADEMY_TRACKS).find(([key, val]) => val.slug === slug)
@@ -157,12 +159,22 @@ export default function CoursePage() {
     )
   }
 
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
+    setRateLimitMsg(null)
 
     try {
-      // 1. Ingest to Dashboard External Mailbox
+      // 1. Check Rate Limit (Hard Lock)
+      const limit = await checkLeadRateLimit(form.email)
+      if (!limit.allowed) {
+        setRateLimitMsg(`Registrar line is secured. Please wait ${limit.remainingMins} minutes before sending another application.`)
+        setLoading(false)
+        return
+      }
+
+      // 2. Ingest to Dashboard External Mailbox (Priority #1)
       const { error: lError } = await supabase
         .from('contact_leads')
         .insert([{
@@ -175,22 +187,46 @@ export default function CoursePage() {
             slug,
             course: course.title,
             phone: form.phone,
-            background: form.background
+            background: form.background,
+            lead_type: 'academy',
+            lead_origin: `Academy: ${course.title}`
           }
         }])
 
       if (lError) throw lError
 
-      // 2. Trigger SMTP Luxury Acknowledgment
-      await supabase.functions.invoke('send-contact-email', {
-        body: { 
-          lead: { 
-            full_name: form.name, 
-            email: form.email,
-            company: 'UPLYNK Academy'
-          } 
-        }
-      })
+      // 3. Trigger SMTP (Silent Failover)
+      try {
+        await supabase.functions.invoke('send-contact-email', {
+          body: { 
+            lead: { 
+              full_name: form.name, 
+              email: form.email,
+              company: 'UPLYNK Academy',
+              type: 'academy',
+              origin: `Academy: ${course.title}`,
+              course: course.title
+            } 
+          }
+        })
+      } catch (smtpErr) {
+        console.error('SMTP Background failure:', smtpErr)
+        // Update the record with failure flag in the background
+        await supabase
+          .from('contact_leads')
+          .update({ meta: { 
+            slug, 
+            course: course.title, 
+            phone: form.phone, 
+            background: form.background, 
+            lead_type: 'academy', 
+            lead_origin: `Academy: ${course.title}`,
+            smtp_failed: true 
+          }})
+          .eq('email', form.email)
+          .order('created_at', { ascending: false })
+          .limit(1)
+      }
 
       setSubmitted(true)
     } catch (error) {
@@ -217,7 +253,7 @@ export default function CoursePage() {
 
           <div className="cp-meta-row">
             <div className="cp-meta-item"><FiClock /> {course.duration}</div>
-            <div className="cp-meta-item"><FiUsers /> {course.students.toLocaleString()}+ Alumni</div>
+            <div className="cp-meta-item"><FiUsers /> {(course.students || 0).toLocaleString()}+ Alumni</div>
             <div className="cp-meta-item"><FiAward /> {course.level}</div>
             <div className={`cp-meta-item cp-meta-status ${course.status?.toLowerCase().replace(' ', '-') || 'ongoing'}`}>
               Status: {course.status || 'Ongoing'}
@@ -351,6 +387,11 @@ export default function CoursePage() {
             </div>
           ) : (
             <form className="cp-apply-form" onSubmit={handleSubmit}>
+              {rateLimitMsg && (
+                <div className="rate-limit-notice" style={{ gridColumn: 'span 2', marginBottom: '1.5rem' }}>
+                  {rateLimitMsg}
+                </div>
+              )}
               <div className="cp-form-row">
                 <div className="cp-form-group">
                   <label>Full Name *</label>

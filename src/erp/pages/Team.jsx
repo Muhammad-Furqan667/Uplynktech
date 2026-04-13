@@ -25,15 +25,25 @@ const Team = () => {
     // Initial load
     fetchTeamData()
 
-    // Setup periodic sync (10s for team stability)
-    const syncInterval = setInterval(() => {
-      if (document.visibilityState === 'visible') {
-        fetchTeamData()
-      }
-    }, 10000)
+    // REALTIME: Monitor organizational changes instantly
+    const channel = supabase
+      .channel('team-realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'team_members' },
+        () => fetchTeamData()
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'profiles' },
+        () => fetchTeamData()
+      )
+      .subscribe()
 
-    return () => clearInterval(syncInterval)
-  }, [])
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [user.id])
 
   const fetchTeamData = async () => {
     try {

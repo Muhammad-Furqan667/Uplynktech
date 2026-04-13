@@ -1,10 +1,15 @@
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useSEO } from '../hooks/useSEO'
 import { FiArrowRight, FiCheck } from 'react-icons/fi'
 import { supabase } from '../lib/supabase'
+import { checkLeadRateLimit } from '../lib/utils'
 import '../styles/Consultation.css'
 
 export default function Consultation() {
+  const location = useLocation()
+  const sourceService = location.state?.sourceService
+
   useSEO({
     title: 'Professional Strategic Consultation | UPLYNK Tech',
     description: 'Schedule a strategic consultation session with UPLYNK Tech experts to discuss your software engineering, AI, or digital growth objectives.',
@@ -20,6 +25,7 @@ export default function Consultation() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [rateLimitMsg, setRateLimitMsg] = useState(null)
 
   const updateField = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -28,38 +34,67 @@ export default function Consultation() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
+    setRateLimitMsg(null)
     
     try {
-      // 1. Ingest to Dashboard External Mailbox
+      // 1. Check Rate Limit (Hard Lock)
+      const limit = await checkLeadRateLimit(formData.email)
+      if (!limit.allowed) {
+        setRateLimitMsg(`Engineering line is secured. Please wait ${limit.remainingMins} minutes before sending another brief.`)
+        setLoading(false)
+        return
+      }
+
+      // 2. Ingest to Dashboard External Mailbox (Priority #1)
       const { error: lError } = await supabase
         .from('contact_leads')
         .insert([{
           full_name: formData.name,
           email: formData.email,
-          subject: 'Strategic Consultation Request',
+          subject: sourceService ? `Consultation: ${sourceService}` : 'Strategic Consultation Request',
           message: formData.details,
           meta: {
-            company: formData.company
+            company: formData.company,
+            lead_type: 'consult',
+            lead_origin: sourceService ? `Service: ${sourceService}` : 'General Consultation'
           }
         }])
 
       if (lError) throw lError
 
-      // 2. Trigger SMTP Luxury Acknowledgment
-      await supabase.functions.invoke('send-contact-email', {
-        body: { 
-          lead: { 
-            full_name: formData.name, 
-            email: formData.email,
-            company: formData.company
-          } 
-        }
-      })
+      // 3. Trigger SMTP (Silent Failover - user doesn't see error if DB save worked)
+      try {
+        await supabase.functions.invoke('send-contact-email', {
+          body: { 
+            lead: { 
+              full_name: formData.name, 
+              email: formData.email,
+              company: formData.company,
+              type: 'consult',
+              origin: sourceService ? `Service: ${sourceService}` : 'General Consultation'
+            } 
+          }
+        })
+      } catch (smtpErr) {
+        console.error('SMTP Background failure:', smtpErr)
+        // Set fallback flag in DB for admin visibility
+        await supabase
+          .from('contact_leads')
+          .update({ meta: { 
+            company: formData.company, 
+            lead_type: 'consult', 
+            lead_origin: sourceService ? `Service: ${sourceService}` : 'General Consultation',
+            smtp_failed: true 
+          }})
+          .eq('email', formData.email)
+          .order('created_at', { ascending: false })
+          .limit(1)
+      }
 
       setSubmitted(true)
     } catch (error) {
-      console.error('Submission failed:', error)
-      alert('Strategic brief transmission failed. Please try again.')
+      console.error('Lead capture failed:', error)
+      alert('Transmission error. Please check your connection and try again.')
     } finally {
       setLoading(false)
     }
@@ -87,6 +122,11 @@ export default function Consultation() {
         <div className="consultation-form-wrapper single-step">
           <div className="step-content">
             <h2 className="minimal-form-title">Strategic Connection Details</h2>
+            {rateLimitMsg && (
+              <div className="rate-limit-notice">
+                {rateLimitMsg}
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="details-form">
               <div className="form-row">
                 <div className="form-group">

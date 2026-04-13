@@ -8,6 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [stayLoggedIn, setStayLoggedIn] = useState(true)
   
   const { signIn } = useAuth()
   const navigate = useNavigate()
@@ -21,8 +22,7 @@ const Login = () => {
     setLoading(true)
 
     try {
-      const { data, error: signInError } = await signIn(email, password)
-      if (signInError) throw signInError
+      await signIn(email, password, stayLoggedIn)
       navigate(from, { replace: true })
     } catch (err) {
       console.error('Login Error:', err)
@@ -70,6 +70,18 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+          </div>
+
+          <div className="login-options">
+            <label className="checkbox-container">
+              <input 
+                type="checkbox" 
+                checked={stayLoggedIn} 
+                onChange={(e) => setStayLoggedIn(e.target.checked)} 
+              />
+              <span className="checkmark"></span>
+              <span className="checkbox-label">Stay logged in</span>
+            </label>
           </div>
 
           <button type="submit" className="login-btn" disabled={loading}>

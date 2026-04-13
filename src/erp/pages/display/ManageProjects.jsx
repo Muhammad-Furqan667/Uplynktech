@@ -10,7 +10,7 @@ const ManageProjects = () => {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState(null)
-  
+
   const initialForm = {
     slug: '', category: '', title: '', client: '', impact: '',
     image: '', description: '', tech: [], is_featured: false, stats: []
@@ -36,10 +36,10 @@ const ManageProjects = () => {
     e.preventDefault()
     const techArray = techInput.split(',').map(t => t.trim()).filter(Boolean)
     const finalData = { ...formData, tech: techArray }
-    
+
     try {
       const { id, created_at, updated_at, ...cleanData } = finalData
-      
+
       if (editingId) {
         const { error } = await supabase.from('display_projects').update(cleanData).eq('id', editingId)
         if (error) throw error
@@ -84,16 +84,16 @@ const ManageProjects = () => {
           <div className="form-grid">
             <div className="form-group">
               <label>Project Title</label>
-              <input value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required />
+              <input value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} required />
             </div>
             <div className="form-group">
               <label>URL Slug</label>
-              <input value={formData.slug} onChange={e => setFormData({...formData, slug: e.target.value})} placeholder="e.g. smart-city-ai" required />
+              <input value={formData.slug} onChange={e => setFormData({ ...formData, slug: e.target.value })} placeholder="e.g. smart-city-ai" required />
             </div>
             <div className="form-group" style={{ gridColumn: 'span 2' }}>
-              <DisplayImageUploader 
+              <DisplayImageUploader
                 value={formData.image}
-                onChange={(val) => setFormData({...formData, image: val})}
+                onChange={(val) => setFormData({ ...formData, image: val })}
                 bucket="project image"
                 label="Project Hero Media"
                 placeholder="Storage URI or Case Study Link..."
@@ -101,7 +101,7 @@ const ManageProjects = () => {
             </div>
             <div className="form-group">
               <label>Category</label>
-              <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} required>
+              <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} required>
                 <option value="">Select Category</option>
                 {categories.map(c => <option key={c.slug} value={c.slug}>{c.title}</option>)}
               </select>
@@ -112,22 +112,22 @@ const ManageProjects = () => {
             </div>
             <div className="form-group">
               <label>Client Name</label>
-              <input value={formData.client} onChange={e => setFormData({...formData, client: e.target.value})} placeholder="e.g. Acme Corp" />
+              <input value={formData.client} onChange={e => setFormData({ ...formData, client: e.target.value })} placeholder="e.g. Acme Corp" />
             </div>
             <div className="form-group">
               <label>Project Impact / Result</label>
-              <input value={formData.impact} onChange={e => setFormData({...formData, impact: e.target.value})} placeholder="e.g. 40% efficiency boost" />
+              <input value={formData.impact} onChange={e => setFormData({ ...formData, impact: e.target.value })} placeholder="e.g. 40% efficiency boost" />
             </div>
             <div className="form-group" style={{ gridColumn: 'span 2' }}>
               <label>Description</label>
-              <textarea value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} rows="3" />
+              <textarea value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} rows="3" />
             </div>
             <div className="form-group" style={{ gridColumn: 'span 2' }}>
               <label className="checkbox-container">
-                <input 
-                  type="checkbox" 
-                  checked={formData.is_featured} 
-                  onChange={e => setFormData({...formData, is_featured: e.target.checked})} 
+                <input
+                  type="checkbox"
+                  checked={formData.is_featured}
+                  onChange={e => setFormData({ ...formData, is_featured: e.target.checked })}
                 />
                 <span>Display in Featured Section?</span>
               </label>
@@ -135,11 +135,11 @@ const ManageProjects = () => {
           </div>
 
           <div className="jsonb-managers-grid">
-            <DisplayListManager 
+            <DisplayListManager
               title="Project Success Metrics"
               items={formData.stats || []}
               schema={statsSchema}
-              onChange={(items) => setFormData({...formData, stats: items})}
+              onChange={(items) => setFormData({ ...formData, stats: items })}
               addButtonText="Add Metric"
             />
           </div>
@@ -148,7 +148,7 @@ const ManageProjects = () => {
             <button type="submit" className="primary-btn gold-btn">
               {editingId ? <FiCheck /> : <FiPlus />} {editingId ? 'Save Changes' : 'Create Project'}
             </button>
-            {editingId && <button type="button" className="icon-btn" onClick={() => {setEditingId(null); setFormData(initialForm); setTechInput('')}}>Cancel</button>}
+            {editingId && <button type="button" className="icon-btn" onClick={() => { setEditingId(null); setFormData(initialForm); setTechInput('') }}>Cancel</button>}
           </div>
         </form>
       </section>

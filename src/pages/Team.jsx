@@ -42,7 +42,13 @@ export default function Team() {
       const leadership = data.filter(m => !m.is_ceo && m.is_leadership)
       const extended = data.filter(m => !m.is_ceo && !m.is_leadership)
       
-      setCeo(ceoMatch || { name: 'Hanif Ullah Khan', role: 'Chief Executive Officer', bio: 'Visionary Strategist.', message: 'Leading digital transformation.' })
+      setCeo(ceoMatch || { 
+        name: 'Hanif Ullah Khan', 
+        role: 'Chief Executive Officer', 
+        bio: 'Visionary Strategist.', 
+        message: 'Leading digital transformation.',
+        image: 'hanif_khan.jpeg' 
+      })
       setLeadershipMembers(leadership)
       setExtendedMembers(extended)
     }

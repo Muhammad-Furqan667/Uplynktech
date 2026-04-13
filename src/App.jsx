@@ -25,6 +25,7 @@ import ERPTeam from './erp/pages/Team'
 import Mail from './erp/pages/Mail'
 import AdminPanel from './erp/pages/admin/AdminPanel'
 import DisplayManagement from './erp/pages/display/DisplayManagement'
+import BackButton from './components/BackButton'
 import './App.css'
 
 // Custom component to handle scroll to top on route change
@@ -73,6 +74,7 @@ function App() {
         <ScrollToTop />
         <div className="app">
           <Navbar />
+          <BackButton />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/team" element={<Team />} />

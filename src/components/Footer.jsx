@@ -6,7 +6,7 @@ import {
   FaTiktok,
   FaLinkedin,
   FaWhatsapp,
-  FaFacebook
+  FaEnvelope
 } from 'react-icons/fa'
 import { FiArrowRight } from 'react-icons/fi'
 
@@ -34,7 +34,7 @@ export default function Footer() {
   return (
     <footer className="professional-footer">
       <div className="footer-top-grid">
-        
+
         {/* Brand Column */}
         <div className="footer-brand-col">
           <div className="footer-logo">UPLYNK TECH</div>
@@ -42,19 +42,19 @@ export default function Footer() {
             Equipping modern enterprises with resilient software systems and transformative digital growth.
           </p>
           <div className="footer-socials">
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer" title="LinkedIn">
+            <a href="https://www.linkedin.com/in/uplynk-tech-4b29933b0/" target="_blank" rel="noreferrer" title="LinkedIn">
               <FaLinkedin />
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" title="Instagram">
+            <a href="https://instagram.com/uplynktech" target="_blank" rel="noreferrer" title="Instagram">
               <FaInstagram />
             </a>
-            <a href="https://tiktok.com" target="_blank" rel="noreferrer" title="TikTok">
+            <a href="https://www.tiktok.com/@uplynk_tech.offic" target="_blank" rel="noreferrer" title="TikTok">
               <FaTiktok />
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noreferrer" title="Facebook">
-              <FaFacebook />
+            <a href="mailto:uplynktech@gmail.com" target="_blank" rel="noreferrer" title="Email">
+              <FaEnvelope />
             </a>
-            <a href="https://wa.me/" target="_blank" rel="noreferrer" title="WhatsApp">
+            <a href="https://wa.me/923298650167" target="_blank" rel="noreferrer" title="WhatsApp">
               <FaWhatsapp />
             </a>
           </div>
@@ -89,9 +89,9 @@ export default function Footer() {
             Subscribe to our engineering newsletter for deep dives on scale and AI.
           </p>
           <form className="footer-subscribe-form" onSubmit={handleSubscribe}>
-            <input 
-              type="email" 
-              placeholder="Business Email" 
+            <input
+              type="email"
+              placeholder="Business Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
