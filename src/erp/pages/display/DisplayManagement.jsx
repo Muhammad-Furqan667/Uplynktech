@@ -6,6 +6,7 @@ import ManageTeam from './ManageTeam'
 import ManageServices from './ManageServices'
 import ManageCourses from './ManageCourses'
 import ManageReviews from './ManageReviews'
+import '../admin/AdminShared.css'
 import './DisplayManagement.css'
 
 const DisplayManagement = () => {
@@ -25,7 +26,7 @@ const DisplayManagement = () => {
   ]
 
   return (
-    <div className="admin-panel display-mgmt">
+    <div className="admin-panel display-mgmt-root">
       <div className="admin-header">
         <h1>Display <span className="gold-text">Architect</span></h1>
         <p>Manage public-facing engineering content and portfolio assets</p>
@@ -45,11 +46,8 @@ const DisplayManagement = () => {
       </div>
 
       <div className="admin-content-card">
-        {tabs.map(tab => (
-          <div 
-            key={tab.id} 
-            style={{ display: activeTab === tab.id ? 'block' : 'none' }}
-          >
+        {tabs.map(tab => activeTab === tab.id && (
+          <div key={tab.id}>
             <tab.component />
           </div>
         ))}

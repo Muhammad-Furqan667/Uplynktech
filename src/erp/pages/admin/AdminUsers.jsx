@@ -148,6 +148,7 @@ const AdminUsers = () => {
               <select value={role} onChange={(e) => setRole(e.target.value)}>
                 <option value="User">User</option>
                 <option value="Admin">Admin</option>
+                <option value="Front-end">Front-end</option>
                 <option value="Contact">Contact</option>
               </select>
             </div>

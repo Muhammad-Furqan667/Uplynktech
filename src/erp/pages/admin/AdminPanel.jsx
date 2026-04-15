@@ -3,6 +3,7 @@ import { FiUsers, FiLayers, FiSettings, FiShuffle } from 'react-icons/fi'
 import AdminUsers from './AdminUsers'
 import AdminHierarchy from './AdminHierarchy'
 import AdminSettings from './AdminSettings'
+import './AdminShared.css'
 import './AdminPanel.css'
 
 const AdminPanel = ({ defaultTab = 'users' }) => {

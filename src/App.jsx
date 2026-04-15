@@ -121,7 +121,7 @@ function App() {
                   </ProtectedRoute>
                 } />
                 <Route path="display" element={
-                  <ProtectedRoute requireAdmin={true}>
+                  <ProtectedRoute allowedRoles={['Admin', 'Front-end']}>
                     <DisplayManagement />
                   </ProtectedRoute>
                 } />

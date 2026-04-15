@@ -1,9 +1,14 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
-const ProtectedRoute = ({ children, requireAdmin = false }) => {
+const ProtectedRoute = ({ children, requireAdmin = false, allowedRoles = [] }) => {
   const { user, profile, loading, profileLoading } = useAuth()
   const location = useLocation()
+
+  // Define effective allowed roles
+  const effectiveRoles = allowedRoles.length > 0 
+    ? allowedRoles 
+    : (requireAdmin ? ['Admin'] : [])
 
   // Only show the full initialization screen if we have NO user and are still loading
   // This prevents the page from unmounting during background focus checks if a session exists

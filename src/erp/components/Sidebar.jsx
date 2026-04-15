@@ -27,7 +27,7 @@ const Sidebar = () => {
     { icon: FiBriefcase, label: 'Subordinates', path: '/erp/subordinates', show: isSenior },
     { icon: FiUsers, label: 'Team', path: '/erp/team', show: true },
     { icon: FiMail, label: 'Mail Hub', path: '/erp/mail', show: true }, // Unlocked for all
-    { icon: FiAirplay, label: 'Display', path: '/erp/display', show: profile?.role === 'Admin' },
+    { icon: FiAirplay, label: 'Display', path: '/erp/display', show: profile?.role === 'Front-end' },
     { icon: FiShield, label: 'Admin', path: '/erp/admin', show: profile?.role === 'Admin' },
     { icon: FiSettings, label: 'Settings', path: '/erp/settings', show: profile?.role === 'Admin' },
   ]
