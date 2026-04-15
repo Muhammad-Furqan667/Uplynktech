@@ -175,23 +175,34 @@ const ManageTeam = () => {
             </div>
 
             <div className="form-group" style={{ gridColumn: 'span 2' }}>
-              <label>Flags & Messaging</label>
-              <div className="flags-row">
+              <label>Member Tier Hierarchy</label>
+              <div className="flags-row" style={{ display: 'flex', gap: '2rem', marginTop: '0.5rem' }}>
                 <label className="checkbox-container">
                   <input 
-                    type="checkbox" 
+                    type="radio" 
+                    name="tier"
                     checked={formData.is_ceo} 
-                    onChange={(e) => setFormData({...formData, is_ceo: e.target.checked})}
+                    onChange={() => setFormData({...formData, is_ceo: true, is_leadership: false})}
                   />
-                  <span>Is CEO?</span>
+                  <span>CEO (Visionary)</span>
                 </label>
                 <label className="checkbox-container">
                   <input 
-                    type="checkbox" 
-                    checked={formData.is_leadership} 
-                    onChange={(e) => setFormData({...formData, is_leadership: e.target.checked})}
+                    type="radio" 
+                    name="tier"
+                    checked={!formData.is_ceo && formData.is_leadership} 
+                    onChange={() => setFormData({...formData, is_ceo: false, is_leadership: true})}
                   />
-                  <span>Leadership?</span>
+                  <span>Leadership (Lead)</span>
+                </label>
+                <label className="checkbox-container">
+                  <input 
+                    type="radio" 
+                    name="tier"
+                    checked={!formData.is_ceo && !formData.is_leadership} 
+                    onChange={() => setFormData({...formData, is_ceo: false, is_leadership: false})}
+                  />
+                  <span>Extended Member</span>
                 </label>
               </div>
             </div>
@@ -246,11 +257,14 @@ const ManageTeam = () => {
                   <td>
                     <div className="admin-user-cell">
                       <div className="user-avatar-mini">
-                        {member.image ? (
-                          <img src={resolveImageUrl(member.image)} alt="" />
-                        ) : (
-                          <FiUser />
-                        )}
+                        <img 
+                          src={member.image ? resolveImageUrl(member.image) : '/img/default.webp'} 
+                          alt="" 
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = '/img/default.webp';
+                          }}
+                        />
                       </div>
                       <div className="u-info">
                         <span className="u-name">{member.name}</span>

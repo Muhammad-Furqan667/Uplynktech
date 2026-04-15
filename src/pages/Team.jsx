@@ -47,7 +47,7 @@ export default function Team() {
         role: 'Chief Executive Officer', 
         bio: 'Visionary Strategist.', 
         message: 'Leading digital transformation.',
-        image: 'hanif_khan.jpeg' 
+        image: null
       })
       setLeadershipMembers(leadership)
       setExtendedMembers(extended)
@@ -79,6 +79,10 @@ export default function Team() {
     }
   }, [])
 
+  const getMemberImage = (img) => {
+    return img ? resolveImageUrl(img) : '/img/default.webp'
+  }
+
   return (
     <section className="team-page">
       {loading ? (
@@ -92,19 +96,15 @@ export default function Team() {
           <div className="visionary-ceo-block">
             <div className="ceo-card">
               <div className="ceo-image-area">
-                {ceo.image ? (
-                  <img 
-                    src={resolveImageUrl(ceo.image)} 
-                    alt={ceo.name} 
-                    className="ceo-primary-img"
-                    onError={(e) => {
-                      console.error('CEO Image Load Failed:', ceo.image);
-                      e.target.style.display = 'none';
-                    }}
-                  />
-                ) : (
-                  <div className="no-img-placeholder"><FiUser /></div>
-                )}
+                <img 
+                  src={getMemberImage(ceo.image)} 
+                  alt={ceo.name} 
+                  className="ceo-primary-img"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/img/default.webp';
+                  }}
+                />
               </div>
               <div className="ceo-message-area">
                 <span className="quote-serif">"</span>
@@ -133,13 +133,15 @@ export default function Team() {
                       <div className="circle-visual-wrap">
                         <div className="circle-border-accents"></div>
                         <div className="circle-img-container">
-                          {member.image ? (
-                            <img src={resolveImageUrl(member.image)} alt={member.name} className="leader-circle-img" />
-                          ) : (
-                            <div className="leader-no-img">
-                              {member.name.split(' ').map(n => n[0]).join('')}
-                            </div>
-                          )}
+                          <img 
+                            src={getMemberImage(member.image)} 
+                            alt={member.name} 
+                            className="leader-circle-img" 
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = '/img/default.webp';
+                            }}
+                          />
                         </div>
                       </div>
                       <div className="leader-info">
@@ -166,16 +168,15 @@ export default function Team() {
                 {extendedMembers.map(member => (
                   <div key={member.id} className="member-elite-card" onClick={() => setSelectedMember(member)}>
                     <div className="member-visual-area">
-                      {member.image ? (
-                        <img src={resolveImageUrl(member.image)} alt={member.name} className="member-img" />
-                      ) : (
-                        <div className="member-no-img">
-                          <span className="member-initials">
-                            {member.name.split(' ').map(n => n[0]).join('')}
-                          </span>
-                          <FiLayers className="member-bg-icon" />
-                        </div>
-                      )}
+                      <img 
+                        src={getMemberImage(member.image)} 
+                        alt={member.name} 
+                        className="member-img" 
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = '/img/default.webp';
+                        }}
+                      />
                       {/* Minimal Overlay for Socials */}
                       <div className="member-social-overlay">
                         <FiLinkedin />
@@ -204,13 +205,14 @@ export default function Team() {
                 </button>
                 <div className="modal-grid">
                   <div className="modal-visual">
-                    {selectedMember.image ? (
-                      <img src={resolveImageUrl(selectedMember.image)} alt={selectedMember.name} />
-                    ) : (
-                      <div className="modal-no-img-placeholder">
-                        {selectedMember.name.split(' ').map(n => n[0]).join('')}
-                      </div>
-                    )}
+                    <img 
+                      src={getMemberImage(selectedMember.image)} 
+                      alt={selectedMember.name} 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = '/img/default.webp';
+                      }}
+                    />
                   </div>
                   <div className="modal-details">
                     <p className="modal-eyebrow">Member Profile</p>

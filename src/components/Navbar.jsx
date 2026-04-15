@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { FiMenu, FiX, FiChevronDown, FiTerminal, FiCpu, FiLayout, FiBook, FiAward, FiStar, FiMonitor, FiLayers, FiZap, FiUser, FiGlobe, FiPenTool } from 'react-icons/fi'
+import { FiMenu, FiX, FiChevronDown, FiTerminal, FiCpu, FiLayout, FiBook, FiAward, FiStar, FiMonitor, FiLayers, FiZap, FiUser, FiGlobe, FiPenTool, FiMoon, FiSun } from 'react-icons/fi'
 import { useAuth } from '../erp/contexts/AuthContext'
 import './Navbar.css'
 
@@ -8,6 +8,12 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState(null)
+  
+  // Theme state
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('uplynk_theme') === 'dark'
+  })
+  
   const location = useLocation()
   const { user } = useAuth()
 
@@ -18,6 +24,24 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Apply dark mode class to body globally, but NOT on ERP or Auth pages
+  useEffect(() => {
+    const isErpOrAuth = location.pathname.startsWith('/erp') || location.pathname.startsWith('/auth')
+    
+    if (isErpOrAuth) {
+      document.body.classList.remove('dark-mode')
+      return;
+    }
+
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode')
+      localStorage.setItem('uplynk_theme', 'dark')
+    } else {
+      document.body.classList.remove('dark-mode')
+      localStorage.setItem('uplynk_theme', 'light')
+    }
+  }, [isDarkMode, location.pathname])
 
   useEffect(() => {
     setMobileMenuOpen(false)
@@ -44,6 +68,11 @@ export default function Navbar() {
 
   const isErpPage = location.pathname.startsWith('/erp')
 
+  // Completely hide Navbar on ERP pages
+  if (isErpPage) {
+    return null
+  }
+
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
@@ -53,106 +82,105 @@ export default function Navbar() {
           <span className="brand-text">UPLYNK <span className="brand-accent">TECH</span></span>
         </Link>
         
-        {/* Desktop Menu - Conditionally Hidden in ERP */}
-        <ul className="nav-menu">
-          {!isErpPage ? (
-            <>
-              {/* Services with Megamenu */}
-              <li 
-                className="nav-item-dropdown"
-                onMouseEnter={() => setActiveDropdown('services')}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <Link to="/services" className={`nav-link ${location.pathname === '/services' ? 'active' : ''}`}>
-                  Services <FiChevronDown className={`chevron ${activeDropdown === 'services' ? 'rotate' : ''}`} />
-                </Link>
-                <div className={`megamenu ${activeDropdown === 'services' ? 'show' : ''}`}>
-                  <div className="megamenu-grid">
-                    {dropdownData.services.map((item, id) => (
-                      <Link key={id} to={item.to} className="megamenu-card">
-                        <item.icon className="card-icon" />
-                        <div>
-                          <h4>{item.title}</h4>
-                          <p>{item.desc}</p>
-                        </div>
-                      </Link>
-                    ))}
+        <div className="navbar-right">
+          {/* Desktop Menu - Conditionally Hidden in ERP */}
+          <ul className="nav-menu">
+            {!isErpPage ? (
+              <>
+                {/* Services with Megamenu */}
+                <li 
+                  className="nav-item-dropdown"
+                  onMouseEnter={() => setActiveDropdown('services')}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  <Link to="/services" className={`nav-link ${location.pathname === '/services' ? 'active' : ''}`}>
+                    Services <FiChevronDown className={`chevron ${activeDropdown === 'services' ? 'rotate' : ''}`} />
+                  </Link>
+                  <div className={`megamenu ${activeDropdown === 'services' ? 'show' : ''}`}>
+                    <div className="megamenu-grid">
+                      {dropdownData.services.map((item, id) => (
+                        <Link key={id} to={item.to} className="megamenu-card">
+                          <item.icon className="card-icon" />
+                          <div>
+                            <h4>{item.title}</h4>
+                            <p>{item.desc}</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </li>
+                </li>
 
-              {/* Projects with Megamenu */}
-              <li 
-                className="nav-item-dropdown"
-                onMouseEnter={() => setActiveDropdown('projects')}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <Link to="/projects" className={`nav-link ${location.pathname === '/projects' ? 'active' : ''}`}>
-                  Projects <FiChevronDown className={`chevron ${activeDropdown === 'projects' ? 'rotate' : ''}`} />
-                </Link>
-                <div className={`megamenu ${activeDropdown === 'projects' ? 'show' : ''}`}>
-                  <div className="megamenu-grid">
-                    {dropdownData.projects.map((item, id) => (
-                      <Link key={id} to={item.to} className="megamenu-card">
-                        <item.icon className="card-icon" />
-                        <div>
-                          <h4>{item.title}</h4>
-                          <p>{item.desc}</p>
-                        </div>
-                      </Link>
-                    ))}
+                {/* Projects with Megamenu */}
+                <li 
+                  className="nav-item-dropdown"
+                  onMouseEnter={() => setActiveDropdown('projects')}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  <Link to="/projects" className={`nav-link ${location.pathname === '/projects' ? 'active' : ''}`}>
+                    Projects <FiChevronDown className={`chevron ${activeDropdown === 'projects' ? 'rotate' : ''}`} />
+                  </Link>
+                  <div className={`megamenu ${activeDropdown === 'projects' ? 'show' : ''}`}>
+                    <div className="megamenu-grid">
+                      {dropdownData.projects.map((item, id) => (
+                        <Link key={id} to={item.to} className="megamenu-card">
+                          <item.icon className="card-icon" />
+                          <div>
+                            <h4>{item.title}</h4>
+                            <p>{item.desc}</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </li>
+                </li>
 
-              {/* Academy with Megamenu */}
-              <li 
-                className="nav-item-dropdown"
-                onMouseEnter={() => setActiveDropdown('academy')}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <Link to="/courses" className={`nav-link ${location.pathname === '/courses' ? 'active' : ''}`}>
-                  Academy <FiChevronDown className={`chevron ${activeDropdown === 'academy' ? 'rotate' : ''}`} />
-                </Link>
-                <div className={`megamenu ${activeDropdown === 'academy' ? 'show' : ''}`}>
-                  <div className="megamenu-grid">
-                    {dropdownData.academy.map((item, id) => (
-                      <Link key={id} to={item.to} className="megamenu-card">
-                        <item.icon className="card-icon" />
-                        <div>
-                          <h4>{item.title}</h4>
-                          <p>{item.desc}</p>
-                        </div>
-                      </Link>
-                    ))}
+                {/* Academy with Megamenu */}
+                <li 
+                  className="nav-item-dropdown"
+                  onMouseEnter={() => setActiveDropdown('academy')}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  <Link to="/courses" className={`nav-link ${location.pathname === '/courses' ? 'active' : ''}`}>
+                    Academy <FiChevronDown className={`chevron ${activeDropdown === 'academy' ? 'rotate' : ''}`} />
+                  </Link>
+                  <div className={`megamenu ${activeDropdown === 'academy' ? 'show' : ''}`}>
+                    <div className="megamenu-grid">
+                      {dropdownData.academy.map((item, id) => (
+                        <Link key={id} to={item.to} className="megamenu-card">
+                          <item.icon className="card-icon" />
+                          <div>
+                            <h4>{item.title}</h4>
+                            <p>{item.desc}</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </li>
+                </li>
 
-              <li><Link to="/team" className={`nav-link ${location.pathname === '/team' ? 'active' : ''}`}>Team</Link></li>
-              
-              {/* Auth Buttons Only shown on Marketing Page */}
-              <li>
-                <Link to="/auth/login" className="nav-btn signin-btn">
-                  Sign In
-                </Link>
+                <li><Link to="/team" className={`nav-link ${location.pathname === '/team' ? 'active' : ''}`}>Team</Link></li>
+                
+                <li><Link to="/consultation" className="nav-btn">Free Consultation</Link></li>
+              </>
+            ) : (
+              /* Inside ERP: Only show Dashboard Indicator (Optional) or leave empty as per request */
+              <li className="erp-indicator">
+                <span className="indicator-dot"></span>
+                Secure Workspace
               </li>
-              
-              <li><Link to="/consultation" className="nav-btn">Free Consultation</Link></li>
-            </>
-          ) : (
-            /* Inside ERP: Only show Dashboard Indicator (Optional) or leave empty as per request */
-            <li className="erp-indicator">
-              <span className="indicator-dot"></span>
-              Secure Workspace
-            </li>
-          )}
-        </ul>
+            )}
+          </ul>
 
-        {/* Hamburger Toggle */}
-        <button className="hamburger-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? <FiX /> : <FiMenu />}
-        </button>
+          {/* Hamburger Toggle */}
+          <button className="hamburger-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <FiX /> : <FiMenu />}
+          </button>
+
+          <button className="theme-toggle-btn" onClick={() => setIsDarkMode(!isDarkMode)} title="Toggle Night Mode">
+            {isDarkMode ? <FiSun /> : <FiMoon />}
+          </button>
+        </div>
 
       </div>
 
@@ -163,7 +191,6 @@ export default function Navbar() {
           <li><Link to="/projects">Projects</Link></li>
           <li><Link to="/courses">Academy</Link></li>
           <li><Link to="/team">Team</Link></li>
-          <li><Link to="/auth/login" className="mobile-signin-link">Sign In</Link></li>
           <li><Link to="/consultation" className="mobile-consult-link">Consultation</Link></li>
         </ul>
       </div>

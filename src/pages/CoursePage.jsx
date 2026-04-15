@@ -263,9 +263,11 @@ export default function CoursePage() {
             )}
           </div>
 
-          <button className="cp-hero-cta" onClick={() => document.getElementById('cp-apply').scrollIntoView({ behavior: 'smooth' })}>
-            Apply Now <FiArrowRight />
-          </button>
+          {(!course.status || !['completed', 'coming soon'].includes(course.status.toLowerCase())) && (
+            <button className="cp-hero-cta" onClick={() => document.getElementById('cp-apply').scrollIntoView({ behavior: 'smooth' })}>
+              Apply Now <FiArrowRight />
+            </button>
+          )}
         </div>
         <div className="cp-hero-wave" />
       </section>
@@ -364,12 +366,14 @@ export default function CoursePage() {
                       </li>
                     ))}
                   </ul>
-                  <button
-                    className={`cp-plan-btn ${plan.highlight ? 'cp-plan-btn-primary' : 'cp-plan-btn-outline'}`}
-                    onClick={() => document.getElementById('cp-apply').scrollIntoView({ behavior: 'smooth' })}
-                  >
-                    {plan.cta || 'Get Started'} <FiArrowRight />
-                  </button>
+                  {(!course.status || !['completed', 'coming soon'].includes(course.status.toLowerCase())) && (
+                    <button
+                      className={`cp-plan-btn ${plan.highlight ? 'cp-plan-btn-primary' : 'cp-plan-btn-outline'}`}
+                      onClick={() => document.getElementById('cp-apply').scrollIntoView({ behavior: 'smooth' })}
+                    >
+                      {plan.cta || 'Get Started'} <FiArrowRight />
+                    </button>
+                  )}
                 </div>
               );
             })}
@@ -377,7 +381,7 @@ export default function CoursePage() {
         </div>
       </section>
 
-      {/* APPLY FORM */}
+      {/* APPLY FORM OR CLOSED NOTICE */}
       <section className="cp-section cp-apply-section" id="cp-apply">
         <div className="cp-container">
           <div className="cp-section-header-centered">
@@ -386,7 +390,13 @@ export default function CoursePage() {
           </div>
 
           <div className="cp-apply-card">
-            {submitted ? (
+            {course.status && ['completed', 'coming soon'].includes(course.status.toLowerCase()) ? (
+              <div className="cp-success-msg" style={{ background: '#111', border: '1px solid #333' }}>
+                <span className="cp-success-icon">🔒</span>
+                <h3 style={{ color: '#fff' }}>Enrollment Closed</h3>
+                <p style={{ color: '#aaa' }}>This course is currently <strong>{course.status}</strong>. Please check back later for future batches or join our newsletter to stay updated.</p>
+              </div>
+            ) : submitted ? (
               <div className="cp-success-msg">
                 <span className="cp-success-icon">🎉</span>
                 <h3>Application Received!</h3>
@@ -396,7 +406,7 @@ export default function CoursePage() {
             ) : (
               <form className="cp-apply-form" onSubmit={handleSubmit}>
                 {rateLimitMsg && (
-                  <div className="rate-limit-notice">
+                  <div className="rate-limit-notice" style={{ gridColumn: 'span 2', marginBottom: '1.5rem' }}>
                     {rateLimitMsg}
                   </div>
                 )}
@@ -456,7 +466,7 @@ export default function CoursePage() {
                 </div>
                 <div className="cp-form-footer">
                   <button type="submit" className="cp-submit-btn" disabled={loading}>
-                    {loading ? 'Processing...' : 'Submit application'} <FiSend />
+                    {loading ? 'Processing...' : 'Submit Application'} <FiSend />
                   </button>
                   <p className="cp-privacy-hint">Secure application. Guaranteed 24-hour response.</p>
                 </div>

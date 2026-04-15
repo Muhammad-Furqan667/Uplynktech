@@ -53,6 +53,20 @@
   transition: all 0.3s ease;
 }
 
+body.dark-mode .contact-cta {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+body.dark-mode .cta-massive-heading {
+  color: #ffffff;
+}
+
+body.dark-mode .cta-trigger-btn {
+  background-color: #ffffff;
+  color: #000000;
+}
+
 .cta-trigger-btn:hover {
   background-color: #e0e0e0;
   transform: translateY(-2px);

@@ -4,7 +4,6 @@
   width: 100%;
   background-color: var(--bg-primary);
   overflow: hidden;
-  padding-top: 80px; /* Offset for master Navbar */
 }
 
 .erp-main {
