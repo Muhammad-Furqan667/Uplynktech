@@ -10,9 +10,7 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState(null)
   
   // Theme state
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('uplynk_theme') === 'dark'
-  })
+  const [isDarkMode, setIsDarkMode] = useState(false)
   
   const location = useLocation()
   const { user } = useAuth()
@@ -36,10 +34,8 @@ export default function Navbar() {
 
     if (isDarkMode) {
       document.body.classList.add('dark-mode')
-      localStorage.setItem('uplynk_theme', 'dark')
     } else {
       document.body.classList.remove('dark-mode')
-      localStorage.setItem('uplynk_theme', 'light')
     }
   }, [isDarkMode, location.pathname])
 
