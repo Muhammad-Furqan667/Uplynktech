@@ -236,3 +236,29 @@ body.dark-mode .cta-trigger-btn {
   .cta-massive-heading { font-size: 3rem; }
   .cta-subtext { font-size: 1.1rem; }
 }
+
+/* Rate Limit & Loading Spinner */
+.rate-limit-notice-modal {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  border: 1px solid #fecaca;
+  text-align: center;
+}
+
+.btn-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: modal-spin 0.6s linear infinite;
+}
+
+@keyframes modal-spin {
+  to { transform: rotate(360deg); }
+}

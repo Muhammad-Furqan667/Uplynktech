@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { FiMail, FiSend, FiInbox, FiExternalLink, FiUser, FiInfo } from 'react-icons/fi'
+import { FiMail, FiSend, FiInbox, FiExternalLink, FiUser, FiInfo, FiBook } from 'react-icons/fi'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import './Mail.css'
@@ -372,46 +372,82 @@ const Mail = () => {
                 <p>No external leads yet.</p>
               </div>
             ) : (
-              leads.map(lead => (
-                <div key={lead.id} className="lead-card">
-                  <div className="lead-header">
-                    <div className="lead-user">
-                      <FiUser />
-                      <div>
-                        <h4>
-                          {lead.full_name}
-                          {lead.meta?.smtp_failed && <span className="lead-status-alert">SMTP OFFLINE</span>}
-                        </h4>
-                        <span>{lead.email}</span>
+              leads.map(lead => {
+                const isAcademy = lead.meta?.lead_type === 'academy'
+                const isConsult = lead.meta?.lead_type === 'consult'
+                
+                return (
+                  <div key={lead.id} className={`lead-card ${isAcademy ? 'academy-lead' : ''}`}>
+                    <div className="lead-header">
+                      <div className="lead-user">
+                        <FiUser />
+                        <div>
+                          <h4>
+                            {lead.full_name}
+                            {lead.meta?.smtp_failed && (
+                              <span className="lead-status-alert" title={lead.meta.smtp_error || 'Unknown Error'}>
+                                SMTP OFFLINE
+                              </span>
+                            )}
+                          </h4>
+                          <span>{lead.email}</span>
+                        </div>
+                      </div>
+                      <div className="lead-meta-badges">
+                        {lead.meta?.lead_origin && (
+                          <span className="lead-origin-tag">{lead.meta.lead_origin}</span>
+                        )}
+                        <span className="lead-date">{new Date(lead.created_at).toLocaleDateString()}</span>
                       </div>
                     </div>
-                    <div className="lead-meta-badges">
-                      {lead.meta?.lead_origin && (
-                        <span className="lead-origin-tag">{lead.meta.lead_origin}</span>
-                      )}
-                      <span className="lead-date">{new Date(lead.created_at).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-                  <div className="lead-body">
-                    <div className="lead-item">
-                      <FiInfo />
-                      <span>Subject: {lead.subject || (lead.meta?.focus ? `Consultation: ${lead.meta.focus}` : 'General Inquiry')}</span>
-                    </div>
-                    {(lead.company || lead.meta?.company) && (
+                    
+                    <div className="lead-body">
                       <div className="lead-item">
-                         <FiExternalLink />
-                         <span>Company: {lead.company || lead.meta.company}</span>
+                        <FiInfo />
+                        <span>Subject: {lead.subject || (lead.meta?.focus ? `Consultation: ${lead.meta.focus}` : 'General Inquiry')}</span>
                       </div>
-                    )}
-                    {lead.meta?.scale && (
-                      <div className="lead-tag">
-                        Scale: {lead.meta.scale}
+
+                      {isAcademy && (
+                        <>
+                          <div className="lead-item academy-detail">
+                            <FiBook />
+                            <span>Course Requested: <strong className="gold-text-lead">{lead.meta?.course || 'Not specified'}</strong></span>
+                          </div>
+                          {lead.meta?.phone && (
+                            <div className="lead-item">
+                              <FiInfo />
+                              <span>Phone: {lead.meta.phone}</span>
+                            </div>
+                          )}
+                          {lead.meta?.background && (
+                            <div className="lead-tag">
+                              Background: {lead.meta.background}
+                            </div>
+                          )}
+                        </>
+                      )}
+
+                      {!isAcademy && (lead.company || lead.meta?.company) && (
+                        <div className="lead-item">
+                           <FiExternalLink />
+                           <span>Company: {lead.company || lead.meta.company}</span>
+                        </div>
+                      )}
+                      
+                      {lead.meta?.scale && (
+                        <div className="lead-tag">
+                          Scale: {lead.meta.scale}
+                        </div>
+                      )}
+
+                      <div className="lead-message-container">
+                        <span className="lead-message-label">{isConsult ? 'Strategic Briefing:' : 'Message Payload:'}</span>
+                        <p className="lead-message">"{lead.message}"</p>
+                      </div>
                     </div>
-                    )}
-                    <p className="lead-message">"{lead.message}"</p>
                   </div>
-                </div>
-              ))
+                )
+              })
             )}
           </div>
         )}

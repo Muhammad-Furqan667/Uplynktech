@@ -1,15 +1,12 @@
-import { serve } from "std/http/server.ts"
-import { createClient } from "supabase"
-import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts"
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
+import nodemailer from "npm:nodemailer"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
-/**
- * SHARED STYLES 
- */
 const CSS_STYLES = `
   body{margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#FDFBF7;color:#000000}
   .wrapper{width:100%;table-layout:fixed;background-color:#FDFBF7;padding-bottom:40px}
@@ -25,9 +22,9 @@ const CSS_STYLES = `
   .highlight{color:#D4AF37;font-weight:700}
 `;
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response('ok', { status: 200, headers: corsHeaders })
   }
 
   try {
@@ -50,11 +47,16 @@ serve(async (req: Request) => {
     const smtpPass = settings?.find((s: any) => s.key === 'GOOGLE_APP_PASSWORD')?.value
     const smtpEmail = settings?.find((s: any) => s.key === 'GOOGLE_EMAIL')?.value
 
-    if (!smtpPass || !smtpEmail) throw new Error('SMTP credentials not configured.')
+    if (!smtpPass || !smtpEmail) {
+      console.error('[SMTP_ERROR] Missing credentials in erp_settings')
+      throw new Error('SMTP credentials not configured. Please check GOOGLE_EMAIL and GOOGLE_APP_PASSWORD in erp_settings.')
+    }
 
     const type = lead.type || 'consult'
     const origin = lead.origin || 'General Inquiry'
     const name = lead.full_name || 'Valued Client'
+
+    console.log(`[SMTP_INFO] Attempting to send ${type} email to ${lead.email} via ${smtpEmail}`)
 
     // 2. Resolve Template & Subject
     let subject = "Inquiry Received - UPLYNK Strategic Engineering"
@@ -94,24 +96,26 @@ serve(async (req: Request) => {
       </td></tr>
     </table></center></body></html>`;
 
-    // 3. SMTP Handshake & Transmission
-    const client = new SmtpClient()
-    await client.connectTLS({
-      hostname: "smtp.gmail.com",
+    // 3. Nodemailer Transmission (Deno 2 Compatible)
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
       port: 465,
-      username: smtpEmail,
-      password: smtpPass,
-    })
+      secure: true,
+      auth: {
+        user: smtpEmail,
+        pass: smtpPass,
+      },
+    });
 
-    await client.send({
-      from: smtpEmail,
+    console.log('[SMTP_INFO] Initiating Secure Handshake via Nodemailer Port 465...')
+    await transporter.sendMail({
+      from: `"UPLYNK System" <${smtpEmail}>`,
       to: lead.email,
       subject: subject,
-      content: htmlTemplate,
       html: htmlTemplate,
-    })
-
-    await client.close()
+    });
+    
+    console.log('[SMTP_SUCCESS] Transmission confirmed by Nodemailer.')
     
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

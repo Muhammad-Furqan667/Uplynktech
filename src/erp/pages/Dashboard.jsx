@@ -9,6 +9,8 @@ const Dashboard = () => {
   const { user, profile } = useAuth()
   const [tasks, setTasks] = useState([])
   const [timelineDates, setTimelineDates] = useState([])
+  const scrollContainerRef = useRef(null)
+  const todayRef = useRef(null)
   const [selectedTask, setSelectedTask] = useState(null)
   const [completionComment, setCompletionComment] = useState('')
   const [quickUpdate, setQuickUpdate] = useState('')
@@ -45,7 +47,7 @@ const Dashboard = () => {
   useEffect(() => {
     const dates = []
     const today = startOfDay(new Date())
-    for (let i = -7; i <= 6; i++) {
+    for (let i = -14; i <= 14; i++) {
       dates.push(addDays(today, i))
     }
     setTimelineDates(dates)
@@ -74,6 +76,19 @@ const Dashboard = () => {
       supabase.removeChannel(channel)
     }
   }, [user.id])
+
+  useEffect(() => {
+    if (todayRef.current && scrollContainerRef.current) {
+      // Small timeout to ensure browser has rendered elements
+      setTimeout(() => {
+        todayRef.current.scrollIntoView({ 
+          behavior: 'auto', 
+          block: 'nearest', 
+          inline: 'start' 
+        })
+      }, 100)
+    }
+  }, [timelineDates])
 
   const handleTaskCompletion = async () => {
     if (!completionComment.trim()) return
@@ -128,16 +143,20 @@ const Dashboard = () => {
       {/* Left Panel: 14-Day Timeline */}
       <section className="timeline-panel">
         <div className="panel-header">
-          <h2>Task Timeline <span className="timeline-range">(14 Days)</span></h2>
+          <h2>Task Timeline <span className="timeline-range">(30 Days)</span></h2>
         </div>
         
-        <div className="timeline-scroll-container">
+        <div className="timeline-scroll-container" ref={scrollContainerRef}>
           {timelineDates.map((date, idx) => {
             const isToday = isSameDay(date, new Date())
             const dayTasks = tasks.filter(t => isSameDay(new Date(t.due_date), date))
             
             return (
-              <div key={idx} className={`timeline-day ${isToday ? 'today' : ''}`}>
+              <div 
+                key={idx} 
+                ref={isToday ? todayRef : null}
+                className={`timeline-day ${isToday ? 'today' : ''}`}
+              >
                 <div className="day-header">
                   <span className="day-name">{format(date, 'EEE')}</span>
                   <span className="day-date">{format(date, 'MMM dd')}</span>

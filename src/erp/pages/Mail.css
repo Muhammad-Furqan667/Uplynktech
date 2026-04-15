@@ -409,6 +409,38 @@
   border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
+.academy-lead {
+  border-left: 4px solid var(--accent-color);
+  background: linear-gradient(to right, rgba(212, 175, 55, 0.02), #fff);
+}
+
+.academy-detail {
+  padding: 0.5rem;
+  background-color: #fafaf8;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.gold-text-lead {
+  color: #b8860b;
+  font-weight: 800;
+}
+
+.lead-message-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.lead-message-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
 .empty-mail {
   display: flex;
   flex-direction: column;

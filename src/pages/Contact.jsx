@@ -54,7 +54,7 @@ export default function Contact() {
 
       // 3. Trigger SMTP (Silent Failover)
       try {
-        await supabase.functions.invoke('send-contact-email', {
+        const { error: fError } = await supabase.functions.invoke('send-contact-email', {
           body: {
             lead: {
               full_name: formData.name,
@@ -64,11 +64,20 @@ export default function Contact() {
             }
           }
         })
+
+        if (fError) throw fError
       } catch (smtpErr) {
-        console.error('SMTP failure:', smtpErr)
+        console.error('[SMTP_DIAGNOSTIC]', smtpErr)
         await supabase
           .from('contact_leads')
-          .update({ meta: { lead_type: 'consult', lead_origin: 'General Contact Form', smtp_failed: true } })
+          .update({ 
+            meta: { 
+              lead_type: 'consult', 
+              lead_origin: 'General Contact Form', 
+              smtp_failed: true,
+              smtp_error: smtpErr.message || 'Transmission failed'
+            } 
+          })
           .eq('email', formData.email)
           .order('created_at', { ascending: false })
           .limit(1)
@@ -78,7 +87,7 @@ export default function Contact() {
       setTimeout(() => setSubmitted(false), 3000)
       setFormData({ name: '', email: '', subject: '', message: '' })
     } catch (error) {
-      alert('Transmission error. Please try again or use direct mail.')
+      console.error('Submission failed:', error)
     } finally {
       setIsSubmitting(false)
     }

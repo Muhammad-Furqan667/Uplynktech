@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { FiArrowRight, FiX } from 'react-icons/fi'
+import { FiArrowRight, FiX, FiSend } from 'react-icons/fi'
 import { supabase } from '../lib/supabase'
+import { checkLeadRateLimit } from '../lib/utils'
 import './ContactCTA.css'
 
 export default function ContactCTA() {
@@ -12,6 +13,8 @@ export default function ContactCTA() {
     projectDetails: ''
   })
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [rateLimitMsg, setRateLimitMsg] = useState(null)
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -23,25 +26,66 @@ export default function ContactCTA() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsSubmitting(true)
+    setRateLimitMsg(null)
     
     try {
-      // 1. Ingest to Dashboard External Mailbox
+      // 1. Check Rate Limit
+      const limit = await checkLeadRateLimit(formData.email)
+      if (!limit.allowed) {
+        setRateLimitMsg(`Transmission line secured. Please wait ${limit.remainingMins} minutes.`)
+        setIsSubmitting(false)
+        return
+      }
+
+      // 2. Ingest to Dashboard (Strict Schema)
       const { error: lError } = await supabase
         .from('contact_leads')
         .insert([{
-          name: formData.name,
+          full_name: formData.name,
           email: formData.email,
           subject: 'General Project Inquiry',
           message: formData.projectDetails,
-          meta: { company: formData.company }
+          company: formData.company,
+          meta: { 
+            company: formData.company,
+            lead_type: 'consult',
+            lead_origin: 'Homepage CTA Modal'
+          }
         }])
 
       if (lError) throw lError
 
-      // 2. Trigger SMTP Luxury Acknowledgment
-      await supabase.functions.invoke('send-contact-email', {
-        body: { lead: { full_name: formData.name, email: formData.email } }
-      })
+      // 3. Trigger SMTP (Silent Failover)
+      try {
+        const { error: fError } = await supabase.functions.invoke('send-contact-email', {
+          body: { 
+            lead: { 
+              full_name: formData.name, 
+              email: formData.email,
+              company: formData.company,
+              type: 'consult',
+              origin: 'Homepage CTA Modal'
+            } 
+          }
+        })
+
+        if (fError) throw fError
+      } catch (smtpErr) {
+        console.error('[SMTP_DIAGNOSTIC]', smtpErr)
+        await supabase
+          .from('contact_leads')
+          .update({ meta: { 
+            company: formData.company, 
+            lead_type: 'consult', 
+            lead_origin: 'Homepage CTA Modal',
+            smtp_failed: true,
+            smtp_error: smtpErr.message || 'Transmission failed'
+          }})
+          .eq('email', formData.email)
+          .order('created_at', { ascending: false })
+          .limit(1)
+      }
 
       setSubmitted(true)
       setFormData({ name: '', email: '', company: '', projectDetails: '' })
@@ -51,7 +95,8 @@ export default function ContactCTA() {
       }, 4000)
     } catch (error) {
       console.error('Submission failed:', error)
-      alert('Inquiry transmission failed. Please try again.')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -86,6 +131,11 @@ export default function ContactCTA() {
             ) : (
               <>
                 <h3 className="modal-title">Project Inquiry</h3>
+                {rateLimitMsg && (
+                  <div className="rate-limit-notice-modal">
+                    {rateLimitMsg}
+                  </div>
+                )}
                 <form className="elite-contact-form" onSubmit={handleSubmit}>
                   <div className="form-row">
                     <div className="form-group">
@@ -108,9 +158,9 @@ export default function ContactCTA() {
                     <textarea id="projectDetails" name="projectDetails" value={formData.projectDetails} onChange={handleInputChange} rows="4" placeholder="Briefly describe your objectives..." required></textarea>
                   </div>
 
-                  <button type="submit" className="form-submit-btn">
-                    Submit Inquiry
-                    <FiArrowRight />
+                  <button type="submit" className="form-submit-btn" disabled={isSubmitting}>
+                    {isSubmitting ? 'Transmitting...' : 'Submit Inquiry'}
+                    {isSubmitting ? <div className="btn-spinner"></div> : <FiSend />}
                   </button>
                 </form>
               </>
