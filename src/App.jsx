@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import BackButton from './components/BackButton'
+import WhatsAppButton from './components/WhatsAppButton'
 import ProtectedRoute from './erp/components/ProtectedRoute'
 import { AuthProvider } from './erp/contexts/AuthContext'
 import './App.css'
@@ -134,6 +135,7 @@ function App() {
             </Routes>
           </Suspense>
           <Footer />
+          <WhatsAppButton />
         </div>
       </AuthProvider>
     </BrowserRouter>
