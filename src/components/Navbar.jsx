@@ -131,7 +131,7 @@ export default function Navbar() {
                   </div>
                 </li>
 
-                {/* Academy with Megamenu */}
+                {/* Academy with Megamenu (Temporarily Hidden)
                 <li 
                   className="nav-item-dropdown"
                   onMouseEnter={() => setActiveDropdown('academy')}
@@ -154,6 +154,7 @@ export default function Navbar() {
                     </div>
                   </div>
                 </li>
+                */}
 
                 <li><Link to="/team" className={`nav-link ${location.pathname === '/team' ? 'active' : ''}`}>Team</Link></li>
                 
@@ -185,7 +186,7 @@ export default function Navbar() {
         <ul className="mobile-nav-links">
           <li><Link to="/services">Services</Link></li>
           <li><Link to="/projects">Projects</Link></li>
-          <li><Link to="/courses">Academy</Link></li>
+          {/* <li><Link to="/courses">Academy</Link></li> */}
           <li><Link to="/team">Team</Link></li>
           <li><Link to="/consultation" className="mobile-consult-link">Consultation</Link></li>
         </ul>

@@ -18,12 +18,14 @@ export default function Hero() {
       title: 'Strategic AI',
       description: 'Neural-Driven Business Intelligence & Automation Logic.'
     },
+    /*
     {
       id: '03',
       icon: FiZap,
       title: 'The Academy',
-      description: 'Forging the Elite Engineering Pipeline via High-Rigor Deep-Learning.'
+      description: 'Forging the elite engineering pipeline via high-rigor deep-learning.'
     }
+    */
   ]
 
   return (
@@ -40,7 +42,7 @@ export default function Hero() {
             <span className="reveal-box accent">Digital Future.</span>
           </h1>
           <p className="hero-main-subtitle">
-            Premium consultancy, next-generation engineering, and world-class educational programs tailored for modern industry demands.
+            Premium consultancy and next-generation engineering tailored for modern industry demands.
           </p>
           <div className="hero-actions">
             <button className="btn-primary" onClick={() => navigate('/consultation')}>Start Consultation</button>

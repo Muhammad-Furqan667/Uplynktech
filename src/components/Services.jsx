@@ -16,6 +16,7 @@ export default function Services() {
       color: '#7c3aed',
       tags: ['Web Development', 'AI / ML', 'Mobile Apps']
     },
+    /*
     {
       id: 'learn',
       icon: FiBook,
@@ -26,6 +27,7 @@ export default function Services() {
       color: '#0ea5e9',
       tags: ['AI / ML Course', 'Web Dev Course', 'Design Course']
     },
+    */
     {
       id: 'market',
       icon: FiTrendingUp,
@@ -44,7 +46,7 @@ export default function Services() {
         <div className="home-services-header">
           <p className="services-eyebrow">What We Do</p>
           <h2 className="home-services-heading">How Can We Help You?</h2>
-          <p className="home-services-subtext">Choose your path — whether you are building, learning, or growing, UPLYNK is your strategic partner.</p>
+          <p className="home-services-subtext">Choose your path — whether you are building or growing, UPLYNK is your strategic partner.</p>
         </div>
 
         <div className="home-services-grid">

@@ -76,7 +76,7 @@ export default function Footer() {
           <h4 className="footer-col-title">Company</h4>
           <ul>
             <li><Link to="/about">About Us</Link></li>
-            <li><Link to="/courses">The Academy</Link></li>
+            {/* <li><Link to="/courses">The Academy</Link></li> */}
             <li><Link to="/team">Engineering Team</Link></li>
             <li><Link to="/contact">Contact</Link></li>
           </ul>
