@@ -11,18 +11,15 @@ import "./App.css";
 
 // Lazy loaded pages to optimize build chunk size
 const Home = lazy(() => import("./pages/Home"));
-const Team = lazy(() => import("./pages/Team"));
 const Services = lazy(() => import("./pages/Services"));
 const Career = lazy(() => import("./pages/Career"));
-const CoursesPage = lazy(() => import("./pages/CoursesPage"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Contact = lazy(() => import("./pages/Contact"));
 const AboutUsPage = lazy(() => import("./pages/AboutUsPage"));
 const Consultation = lazy(() => import("./pages/Consultation"));
-const Projects = lazy(() => import("./pages/Projects"));
-const ProjectCategory = lazy(() => import("./pages/ProjectCategory"));
-const CoursePage = lazy(() => import("./pages/CoursePage"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 
 // Auth
 const Login = lazy(() => import("./erp/pages/Login"));
@@ -38,13 +35,23 @@ const DisplayManagement = lazy(
   () => import("./erp/pages/display/DisplayManagement"),
 );
 
-// Custom component to handle scroll to top on route change
+// Custom component to handle scroll to top or hash on route change
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (hash) {
+      const element = document.getElementById(hash.substring(1));
+      if (element) {
+        // Delay slightly to ensure content is rendered (important for lazy loads)
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
 
   return null;
 }
@@ -105,18 +112,15 @@ function App() {
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/team" element={<Team />} />
               <Route path="/services" element={<Services />} />
               <Route path="/career" element={<Career />} />
-              <Route path="/courses" element={<CoursesPage />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/about" element={<AboutUsPage />} />
               <Route path="/consultation" element={<Consultation />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/projects/:category" element={<ProjectCategory />} />
-              <Route path="/courses/:slug" element={<CoursePage />} />
               <Route path="/services/:id" element={<ServiceDetail />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
 
               {/* Auth Routes */}
               <Route path="/auth/login" element={<Login />} />

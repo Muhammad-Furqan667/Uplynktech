@@ -1,235 +1,452 @@
+/* src/styles/AboutUsPage.css */
+
 .aboutus-page {
-  padding-bottom: 8rem;
+  padding-bottom: 0;
   background-color: var(--bg-primary);
 }
 
-.aboutus-hero {
-  padding: 180px 0 100px;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 6rem;
-  text-align: center;
-}
-
-.aboutus-hero-inner {
+.container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 2rem;
+}
+
+.center-content {
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.elite-badge {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2.5px;
-  color: var(--accent-color);
-  margin-bottom: 2rem;
-  background-color: var(--bg-primary);
-  padding: 0.6rem 1.4rem;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-}
-
-.hero-title {
-  font-size: 5rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1;
-  letter-spacing: -3.5px;
-  margin-bottom: 2rem;
-}
-
-.hero-title .highlight {
-  color: var(--accent-color);
-}
-
-.hero-subtitle {
-  font-size: 1.5rem;
-  color: var(--text-secondary);
-  max-width: 700px;
-  line-height: 1.6;
+.section-header-center {
+  text-align: center;
   margin-bottom: 4rem;
 }
 
-.hero-actions {
-  display: flex;
-  gap: 1.5rem;
-}
-
-/* --- Mission & Vision Section (Modules) --- */
-.mission-vision-section {
-  margin-bottom: 10rem;
-}
-
-.mission-vision-section .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.mission-flex {
-  display: flex;
-  gap: 3rem;
-}
-
-.mission-module {
-  flex: 1;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  padding: 4rem;
-  border-radius: 4px;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-}
-
-.mission-module.active {
-  background-color: white;
-  border-color: var(--text-primary);
-  box-shadow: 0 40px 80px rgba(0,0,0,0.05);
-}
-
-.module-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 3rem;
-}
-
-.module-icon {
-  font-size: 2rem;
-  color: var(--text-primary);
-}
-
-.module-index {
-  font-family: serif;
-  font-size: 1.5rem;
-  font-style: italic;
-  color: var(--accent-color);
-}
-
-.module-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-  letter-spacing: -1.5px;
-}
-
-.module-text {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
-}
-
-/* --- Core Values (HUD Cards) --- */
-.values-section {
-  margin-bottom: 10rem;
-}
-
-.values-section .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.section-intro {
-  margin-bottom: 5rem;
-}
-
-.section-headline {
-  font-size: 2.5rem;
+.section-header-center h2 {
+  font-size: 3rem;
   font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 1rem;
   letter-spacing: -1px;
 }
 
-.section-sub {
-  font-size: 1.1rem;
+.section-header-center p {
+  font-size: 1.25rem;
   color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.values-hud-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
+/* --- 1. Hero Section --- */
+.about-hero {
+  padding: 160px 0 80px;
+  background-color: var(--bg-primary);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.value-hud-card {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  padding: 3rem 2rem;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+.about-eyebrow {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-color);
+  margin-bottom: 1.5rem;
 }
 
-.value-hud-card:hover {
-  border-color: var(--text-primary);
-  transform: translateY(-5px);
-}
-
-.v-card-top {
+.about-hero-title {
+  font-size: 4.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.1;
+  letter-spacing: -2px;
   margin-bottom: 2rem;
 }
 
-.v-icon {
-  font-size: 1.5rem;
+.about-hero-title .highlight {
   color: var(--accent-color);
 }
 
-.v-title {
+.about-hero-subtitle {
   font-size: 1.25rem;
+  color: var(--text-secondary);
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  line-height: 1.6;
+}
+
+/* --- 2. Our Story --- */
+.about-story-section {
+  padding: 6rem 0;
+  background-color: var(--bg-secondary);
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.story-content h2 {
+  font-size: 1rem;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.story-content h3 {
+  font-size: 2.5rem;
   font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.story-content p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.story-image-placeholder {
+  width: 100%;
+}
+
+.story-img-box {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* --- 3. Mission & Values --- */
+.about-values-section {
+  padding: 8rem 0;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.value-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-color);
+  box-shadow: var(--shadow-md);
+}
+
+.value-icon-box {
+  width: 50px;
+  height: 50px;
+  background-color: var(--bg-primary);
+  color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.value-card h3 {
+  font-size: 1.25rem;
   color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
-.v-desc {
-  font-size: 0.95rem;
+.value-card p {
   color: var(--text-secondary);
   line-height: 1.6;
 }
 
-/* --- Final CTA --- */
-.about-final-cta .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
+/* --- 4. Services Overview --- */
+.about-services-overview {
+  padding: 6rem 0;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
-.cta-enclosure {
-  background-color: var(--text-primary);
-  color: var(--bg-primary);
-  padding: 6rem;
-  border-radius: 12px;
+.services-overview-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.services-overview-header h2 {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.services-overview-header p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.overview-cards {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.overview-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 240px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.overview-card:hover {
+  border-color: var(--text-primary);
+  transform: translateY(-5px);
+}
+
+.overview-card-icon {
+  font-size: 2rem;
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+}
+
+.overview-card h4 {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.overview-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* --- 5. Meet Our Team --- */
+.about-team-section {
+  padding: 8rem 0;
+}
+
+.team-loading {
+  text-align: center;
+  padding: 4rem;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+}
+
+.ceo-spotlight-editorial {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 5rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 4rem;
+  border-radius: 8px;
+  margin-bottom: 5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
   align-items: center;
 }
 
-.cta-enclosure h2 {
-  font-size: 3.5rem;
+.ceo-editorial-img {
+  width: 100%;
+}
+
+.ceo-editorial-img img {
+  width: 100%;
+  aspect-ratio: 1 / 1.1;
+  object-fit: cover;
+  filter: grayscale(100%);
+  border-radius: 4px;
+}
+
+.ceo-editorial-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.editorial-quotes {
+  font-family: serif;
+  font-size: 4rem;
+  line-height: 0.5;
+  color: var(--border-color);
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+.editorial-quote-text {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 4rem;
+}
+
+.editorial-badge {
+  display: inline-block;
+  border: 1px solid var(--border-color);
+  color: var(--accent-color);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 0.4rem 1rem;
+  border-radius: 30px;
+  margin-bottom: 1.5rem;
+  align-self: flex-start;
+}
+
+.editorial-name {
+  font-size: 2.5rem;
   font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -1px;
+}
+
+.editorial-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.team-member-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.team-member-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  border-color: var(--accent-color);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.member-image-wrapper {
+  width: 100%;
+  aspect-ratio: 1/1;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+}
+
+.member-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.6s ease;
+  filter: grayscale(100%) contrast(1.1);
+}
+
+.team-member-card:hover .member-image-wrapper img {
+  transform: scale(1.15) rotate(2deg);
+  filter: grayscale(0%) contrast(1);
+}
+
+.member-info {
+  padding: 1.5rem;
+}
+
+.member-info h4 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.member-role {
+  color: var(--accent-color);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.member-short-bio {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* --- 6. Final CTA --- */
+.about-final-cta {
+  padding: 8rem 0;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+}
+
+.about-final-cta h2 {
+  font-size: 4rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
   letter-spacing: -2px;
+}
+
+.about-final-cta p {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
   max-width: 600px;
 }
 
+.large-cta {
+  font-size: 1.2rem;
+  padding: 1rem 3rem;
+}
+
 /* --- Responsive --- */
-@media (max-width: 1200px) {
-  .hero-title { font-size: 4rem; }
-  .mission-flex { flex-direction: column; }
-  .values-hud-grid { grid-template-columns: repeat(2, 1fr); }
-  .cta-enclosure { flex-direction: column; text-align: center; gap: 4rem; }
-  .cta-enclosure h2 { font-size: 2.5rem; }
+@media (max-width: 1024px) {
+  .story-grid { grid-template-columns: 1fr; }
+  .ceo-spotlight-editorial { 
+    grid-template-columns: 1fr; 
+    text-align: center; 
+    gap: 2rem; 
+    padding: 2rem; 
+  }
+  .ceo-editorial-img { margin: 0 auto; max-width: 350px; }
+  .editorial-badge { align-self: center; display: inline-block; }
+  .about-hero-title { font-size: 3.5rem; }
+  .about-final-cta h2 { font-size: 3rem; }
 }
 
 @media (max-width: 768px) {
-  .hero-title { font-size: 3rem; }
-  .hero-actions { flex-direction: column; width: 100%; }
-  .hero-actions button { width: 100%; }
-  .module-title { font-size: 2rem; }
-  .values-hud-grid { grid-template-columns: 1fr; }
+  .about-hero-title { font-size: 2.5rem; letter-spacing: -1px; }
+  .section-header-center h2 { font-size: 2.2rem; }
+  .ceo-editorial-img { max-width: 250px; }
+  .editorial-quote-text { font-size: 1.25rem; margin-bottom: 2rem; }
+  .editorial-name { font-size: 2rem; }
+  .overview-card { width: 100%; }
 }

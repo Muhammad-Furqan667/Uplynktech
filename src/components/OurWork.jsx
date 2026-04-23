@@ -1,47 +1,37 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './OurWork.css'
 import { FaTimes, FaArrowRight } from 'react-icons/fa'
+import { FiLayers } from 'react-icons/fi'
+import { supabase } from '../lib/supabase'
+import { resolveImageUrl } from '../lib/utils'
 
 export default function OurWork() {
   const [selectedProject, setSelectedProject] = useState(null)
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const [projects, setProjects] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const projects = [
-    {
-      id: 1,
-      title: 'B2B Procurement Platform',
-      description: 'End-to-end scalable procurement system for enterprise operations.',
-      category: 'Software Engineering',
-      image: 'linear-gradient(135deg, #111111 0%, #2A2A2A 100%)',
-      details: 'Engineered a highly available system using React, Node, and PostgreSQL, replacing archaic legacy systems and speeding up procurement cycles by 40%.'
-    },
-    {
-      id: 2,
-      title: 'AI Customer Operations Engine',
-      description: 'Internal LLM tooling capable of automating Tier 1 support routines.',
-      category: 'AI & Data',
-      image: 'linear-gradient(135deg, #E2DFD6 0%, #CAC6BD 100%)',
-      details: 'Leveraged RAG architectures and OpenAI integrations to securely parse corporate wikis, reducing support resolution times by 55%.'
-    },
-    {
-      id: 3,
-      title: 'Retail Mobile App',
-      description: 'Cross-platform mobile experience with dynamic inventory tracking.',
-      category: 'Software Engineering',
-      image: 'linear-gradient(135deg, #2D2D2D 0%, #404040 100%)',
-      details: 'Deployed via React Native. Includes native biometric login, flawless offline sync protocols, and real-time push analytics.'
-    },
-    {
-      id: 4,
-      title: 'Omnichannel Brand Overhaul',
-      description: 'Complete UI/UX restructuring and digital brand language alignment.',
-      category: 'Creative & Digital',
-      image: 'linear-gradient(135deg, #DFDDDA 0%, #B8B5AE 100%)',
-      details: 'Pushed a comprehensive design system utilizing Figma best practices, converting to a 32% increase in user retention across SaaS platforms.'
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const { data, error } = await supabase
+          .from('display_projects')
+          .select('*')
+          .eq('is_featured', true)
+          .order('created_at', { ascending: false })
+
+        if (error) throw error
+        setProjects(data)
+      } catch (err) {
+        console.error('Error fetching projects:', err)
+      } finally {
+        setLoading(false)
+      }
     }
-  ]
+    fetchProjects()
+  }, [])
 
-  const categories = ['all', 'Software Engineering', 'AI & Data', 'Creative & Digital']
+  const categories = ['all', ...new Set(projects.map(p => p.category).filter(Boolean))]
 
   const filteredProjects = selectedCategory === 'all' 
     ? projects 
@@ -59,46 +49,53 @@ export default function OurWork() {
           </p>
         </div>
 
-        <div className="category-filter">
-          {categories.map((category) => (
-            <button
-              key={category}
-              className={`filter-text-btn ${selectedCategory === category ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category === 'all' ? 'All Projects' : category}
-            </button>
-          ))}
-        </div>
-
-        <div className="projects-editorial-grid">
-          {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              className="project-editorial-card"
-              onClick={() => setSelectedProject(project)}
-            >
-              {/* Sleek monochromatic or metallic placeholder instead of rainbow */}
-              <div
-                className="project-image-box"
-                style={{ background: project.image }}
-              >
-                <div className="project-hover-curtain">
-                  <span className="curtain-text">View Case Study</span>
-                </div>
-              </div>
-              <div className="project-editorial-info">
-                <span className="project-meta-tag">{project.category}</span>
-                <h3 className="project-editorial-title">{project.title}</h3>
-                <p className="project-editorial-desc">{project.description}</p>
-                <div className="project-editorial-link">
-                  <span>Explore</span>
-                  <FaArrowRight className="link-arrow"/>
-                </div>
-              </div>
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>Loading projects...</div>
+        ) : (
+          <>
+            <div className="category-filter">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  className={`filter-text-btn ${selectedCategory === category ? 'active' : ''}`}
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  {category === 'all' ? 'All Projects' : category}
+                </button>
+              ))}
             </div>
-          ))}
-        </div>
+
+            <div className="projects-editorial-grid">
+              {filteredProjects.map((project) => (
+                <div
+                  key={project.id}
+                  className="project-editorial-card"
+                  onClick={() => setSelectedProject(project)}
+                >
+                  <div className="project-image-box" style={{ overflow: 'hidden' }}>
+                    {project.image ? (
+                        <img src={resolveImageUrl(project.image)} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-secondary)', color: 'var(--text-secondary)' }}><FiLayers size={40} /></div>
+                    )}
+                    <div className="project-hover-curtain">
+                      <span className="curtain-text">View Case Study</span>
+                    </div>
+                  </div>
+                  <div className="project-editorial-info">
+                    <span className="project-meta-tag">{project.category}</span>
+                    <h3 className="project-editorial-title">{project.title}</h3>
+                    <p className="project-editorial-desc">{project.description || project.impact || ''}</p>
+                    <div className="project-editorial-link">
+                      <span>Explore</span>
+                      <FaArrowRight className="link-arrow"/>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
 
         {selectedProject && (
           <div className="modal-backdrop" onClick={() => setSelectedProject(null)}>
@@ -115,16 +112,30 @@ export default function OurWork() {
                 <h2 className="modal-case-title">{selectedProject.title}</h2>
               </div>
               
-              <div
-                className="modal-case-image"
-                style={{ background: selectedProject.image }}
-              ></div>
+              <div className="modal-case-image" style={{ overflow: 'hidden', padding: 0 }}>
+                {selectedProject.image ? (
+                    <img src={resolveImageUrl(selectedProject.image)} alt={selectedProject.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-secondary)', color: 'var(--text-secondary)' }}><FiLayers size={60} /></div>
+                )}
+              </div>
               
               <div className="modal-case-body">
-                <p className="modal-case-description">{selectedProject.details}</p>
-                <button className="case-live-btn">
-                  View Live Platform
-                </button>
+                <p className="modal-case-description">{selectedProject.description || selectedProject.content || 'Details coming soon.'}</p>
+                
+                <div style={{ marginTop: '1rem', marginBottom: '2rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  {(selectedProject.tech || []).map((t, i) => (
+                    <span key={i} style={{ padding: '0.25rem 0.75rem', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '20px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{t}</span>
+                  ))}
+                </div>
+
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                  {selectedProject.link && (
+                    <button className="case-live-btn" onClick={() => window.open(selectedProject.link, '_blank')}>
+                      View Live Platform
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>

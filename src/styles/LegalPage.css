@@ -1,0 +1,150 @@
+/* =============================================
+   LEGAL PAGES — Privacy Policy & Terms
+   ============================================= */
+
+.legal-page {
+  background-color: var(--bg-primary);
+  padding: 140px 0 80px;
+  min-height: 100vh;
+}
+
+.legal-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* --- Header --- */
+.legal-header {
+  text-align: center;
+  margin-bottom: 5rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.legal-eyebrow {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+}
+
+.legal-header h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -1.5px;
+  margin-bottom: 0.75rem;
+}
+
+.legal-meta {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* --- Content --- */
+.legal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.legal-section {
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.legal-section:last-of-type {
+  border-bottom: none;
+}
+
+.legal-section h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.3px;
+}
+
+.legal-section p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.legal-section p:last-child {
+  margin-bottom: 0;
+}
+
+.legal-section ul {
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.legal-section li {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.legal-section strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.legal-section a {
+  color: var(--accent-color);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s;
+}
+
+.legal-section a:hover {
+  opacity: 0.75;
+}
+
+/* --- Contact Box --- */
+.legal-contact-box {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent-color);
+  border-radius: 8px;
+  padding: 1.75rem 2rem;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.legal-contact-box p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* --- Footer Nav Link --- */
+.legal-footer-nav {
+  text-align: center;
+  padding: 2rem 0 1rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.legal-footer-nav a {
+  color: var(--accent-color);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .legal-header h1 { font-size: 2.25rem; }
+  .legal-section h2 { font-size: 1.2rem; }
+  .legal-section p,
+  .legal-section li { font-size: 0.98rem; }
+}

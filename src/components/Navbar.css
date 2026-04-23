@@ -45,6 +45,14 @@ body.dark-mode .navbar.scrolled {
   height: 40px;
   width: auto;
   object-fit: contain;
+  /* Ensure logo is always visible regardless of theme */
+  filter: brightness(1);
+  transition: filter 0.3s ease;
+}
+
+/* In dark mode the logo is dark → invert so it appears white/visible */
+body.dark-mode .brand-logo-img {
+  filter: brightness(0) invert(1);
 }
 
 .brand-text {
@@ -115,48 +123,71 @@ body.dark-mode .navbar.scrolled {
   background-color: var(--accent-hover) !important;
 }
 
-/* --- Megamenu & Dropdown Logic --- */
+/* --- Dropdown Base --- */
 .nav-item-dropdown {
   position: relative;
 }
 
 .chevron {
   font-size: 12px;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.3s ease;
 }
 
 .chevron.rotate {
   transform: rotate(180deg);
 }
 
-.megamenu {
+/* --- Simple Vertical Dropdown (Services & About) --- */
+.simple-dropdown {
   position: absolute;
   top: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  width: 750px;
-  background-color: rgba(248, 247, 242, 0.98);
-  backdrop-filter: blur(20px);
+  left: 0;
+  min-width: 220px;
+  background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
-  padding: 2.5rem;
+  border-top: 2px solid var(--accent-color);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
   opacity: 0;
   visibility: hidden;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 40px 80px rgba(0,0,0,0.1);
-  border-radius: 8px;
+  transform: translateY(10px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 2000;
 }
 
-body.dark-mode .megamenu {
-  background-color: rgba(10, 10, 12, 0.98);
-  box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+body.dark-mode .simple-dropdown {
+  background-color: #0d0d0f;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
 }
 
-.megamenu.show {
+.simple-dropdown.show {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
 }
+
+.simple-dropdown-item {
+  display: block;
+  padding: 0.9rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
+  white-space: nowrap;
+}
+
+.simple-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.simple-dropdown-item:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  padding-left: 2rem; /* slide-right indent on hover */
+}
+
+
 
 .megamenu-grid {
   display: grid;

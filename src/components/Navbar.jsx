@@ -44,23 +44,20 @@ export default function Navbar() {
     setActiveDropdown(null)
   }, [location])
 
-  const dropdownData = {
-    services: [
-      { icon: FiTerminal, title: 'Core Engineering', desc: 'Scalable infrastructure & systems.', to: '/services/engineering' },
-      { icon: FiCpu, title: 'Intelligent Automation', desc: 'Neural automation & predictive logic.', to: '/services/ai' },
-      { icon: FiLayout, title: 'Market Dominance', desc: 'Strategic UI/UX & design systems.', to: '/services/growth' }
-    ],
-    projects: [
-      { icon: FiCpu, title: 'AI / ML Projects', desc: 'Machine learning & computer vision.', to: '/projects/ai-ml' },
-      { icon: FiGlobe, title: 'Web Development', desc: 'Full-stack apps & enterprise portals.', to: '/projects/web-dev' },
-      { icon: FiPenTool, title: 'Graphic Design', desc: 'Brand identity & creative design.', to: '/projects/graphic-design' }
-    ],
-    academy: [
-      { icon: FiCpu, title: 'AI / ML Course', desc: '12-week machine learning program.', to: '/courses/ai-ml' },
-      { icon: FiGlobe, title: 'Web Dev Course', desc: '14-week full-stack engineering.', to: '/courses/web-dev' },
-      { icon: FiPenTool, title: 'Graphic Design Course', desc: '10-week design & marketing.', to: '/courses/graphic-design' }
-    ]
-  }
+  const servicesLinks = [
+    { label: 'Web Development',       to: '/services#web' },
+    { label: 'App Development',       to: '/services#app' },
+    { label: 'Graphic Designing',     to: '/services#design' },
+    { label: 'Social Media Marketing',to: '/services#smm' },
+    { label: 'AI Solutions',          to: '/services#ai' },
+  ]
+
+  const aboutLinks = [
+    { label: 'Our Story',      to: '/about#our-story' },
+    { label: 'Our Values',     to: '/about#our-values' },
+    { label: 'Meet the Team',  to: '/about#meet-the-team' },
+    { label: 'Why Choose Us',  to: '/about#why-choose-us' },
+  ]
 
   const isErpPage = location.pathname.startsWith('/erp')
 
@@ -79,11 +76,10 @@ export default function Navbar() {
         </Link>
         
         <div className="navbar-right">
-          {/* Desktop Menu - Conditionally Hidden in ERP */}
           <ul className="nav-menu">
             {!isErpPage ? (
               <>
-                {/* Services with Megamenu */}
+                {/* Services Dropdown */}
                 <li 
                   className="nav-item-dropdown"
                   onMouseEnter={() => setActiveDropdown('services')}
@@ -92,76 +88,36 @@ export default function Navbar() {
                   <Link to="/services" className={`nav-link ${location.pathname === '/services' ? 'active' : ''}`}>
                     Services <FiChevronDown className={`chevron ${activeDropdown === 'services' ? 'rotate' : ''}`} />
                   </Link>
-                  <div className={`megamenu ${activeDropdown === 'services' ? 'show' : ''}`}>
-                    <div className="megamenu-grid">
-                      {dropdownData.services.map((item, id) => (
-                        <Link key={id} to={item.to} className="megamenu-card">
-                          <item.icon className="card-icon" />
-                          <div>
-                            <h4>{item.title}</h4>
-                            <p>{item.desc}</p>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
+                  <div className={`simple-dropdown ${activeDropdown === 'services' ? 'show' : ''}`}>
+                    {servicesLinks.map((item, i) => (
+                      <Link key={i} to={item.to} className="simple-dropdown-item">
+                        {item.label}
+                      </Link>
+                    ))}
                   </div>
                 </li>
 
-                {/* Projects with Megamenu */}
-                <li 
+                {/* About Us Dropdown */}
+                <li
                   className="nav-item-dropdown"
-                  onMouseEnter={() => setActiveDropdown('projects')}
+                  onMouseEnter={() => setActiveDropdown('about')}
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
-                  <Link to="/projects" className={`nav-link ${location.pathname === '/projects' ? 'active' : ''}`}>
-                    Projects <FiChevronDown className={`chevron ${activeDropdown === 'projects' ? 'rotate' : ''}`} />
+                  <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>
+                    About Us <FiChevronDown className={`chevron ${activeDropdown === 'about' ? 'rotate' : ''}`} />
                   </Link>
-                  <div className={`megamenu ${activeDropdown === 'projects' ? 'show' : ''}`}>
-                    <div className="megamenu-grid">
-                      {dropdownData.projects.map((item, id) => (
-                        <Link key={id} to={item.to} className="megamenu-card">
-                          <item.icon className="card-icon" />
-                          <div>
-                            <h4>{item.title}</h4>
-                            <p>{item.desc}</p>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
+                  <div className={`simple-dropdown ${activeDropdown === 'about' ? 'show' : ''}`}>
+                    {aboutLinks.map((item, i) => (
+                      <Link key={i} to={item.to} className="simple-dropdown-item">
+                        {item.label}
+                      </Link>
+                    ))}
                   </div>
                 </li>
-
-                {/* Academy with Megamenu (Temporarily Hidden)
-                <li 
-                  className="nav-item-dropdown"
-                  onMouseEnter={() => setActiveDropdown('academy')}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  <Link to="/courses" className={`nav-link ${location.pathname === '/courses' ? 'active' : ''}`}>
-                    Academy <FiChevronDown className={`chevron ${activeDropdown === 'academy' ? 'rotate' : ''}`} />
-                  </Link>
-                  <div className={`megamenu ${activeDropdown === 'academy' ? 'show' : ''}`}>
-                    <div className="megamenu-grid">
-                      {dropdownData.academy.map((item, id) => (
-                        <Link key={id} to={item.to} className="megamenu-card">
-                          <item.icon className="card-icon" />
-                          <div>
-                            <h4>{item.title}</h4>
-                            <p>{item.desc}</p>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </li>
-                */}
-
-                <li><Link to="/team" className={`nav-link ${location.pathname === '/team' ? 'active' : ''}`}>Team</Link></li>
                 
                 <li><Link to="/consultation" className="nav-btn">Free Consultation</Link></li>
               </>
             ) : (
-              /* Inside ERP: Only show Dashboard Indicator (Optional) or leave empty as per request */
               <li className="erp-indicator">
                 <span className="indicator-dot"></span>
                 Secure Workspace
@@ -185,9 +141,7 @@ export default function Navbar() {
       <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
         <ul className="mobile-nav-links">
           <li><Link to="/services">Services</Link></li>
-          <li><Link to="/projects">Projects</Link></li>
-          {/* <li><Link to="/courses">Academy</Link></li> */}
-          <li><Link to="/team">Team</Link></li>
+          <li><Link to="/about">About Us</Link></li>
           <li><Link to="/consultation" className="mobile-consult-link">Consultation</Link></li>
         </ul>
       </div>

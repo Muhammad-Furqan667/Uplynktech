@@ -76,8 +76,7 @@ export default function Footer() {
           <h4 className="footer-col-title">Company</h4>
           <ul>
             <li><Link to="/about">About Us</Link></li>
-            {/* <li><Link to="/courses">The Academy</Link></li> */}
-            <li><Link to="/team">Engineering Team</Link></li>
+            <li><Link to="/about">Our Team</Link></li>
             <li><Link to="/contact">Contact</Link></li>
           </ul>
         </div>
@@ -110,9 +109,9 @@ export default function Footer() {
           © {currentYear} UPLYNK Technologies. All rights reserved. Precision Engineering.
         </p>
         <div className="footer-legal-links">
-          <Link to="#">Privacy Policy</Link>
+          <Link to="/privacy-policy">Privacy Policy</Link>
           <span className="footer-legal-dot">•</span>
-          <Link to="#">Terms of Service</Link>
+          <Link to="/terms">Terms &amp; Conditions</Link>
         </div>
       </div>
     </footer>

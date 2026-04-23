@@ -4,48 +4,46 @@ import './Hero.css'
 
 export default function Hero() {
   const navigate = useNavigate()
-  
+
   const excellenceBadges = [
     {
       id: '01',
       icon: FiLayers,
-      title: 'Engineering',
-      description: 'Architecting Resilient Enterprise Ecosystems & Scalable Infrastructure.'
+      title: 'Web & App Development',
+      description: 'Fast, secure, and beautiful digital products.'
     },
     {
       id: '02',
       icon: FiCpu,
-      title: 'Strategic AI',
-      description: 'Neural-Driven Business Intelligence & Automation Logic.'
+      title: 'AI Services',
+      description: 'Automate tasks and grow faster with custom AI.'
     },
-    /*
     {
       id: '03',
       icon: FiZap,
-      title: 'The Academy',
-      description: 'Forging the elite engineering pipeline via high-rigor deep-learning.'
+      title: 'Digital Growth',
+      description: 'Social Media & Design to boost sales online.'
     }
-    */
   ]
 
   return (
     <section className="hero">
       <div className="hero-grid-container">
-        
+
         {/* Left Side: Strategic Value Prop */}
         <div className="hero-text-content">
           <div className="hero-badge-elite">
             <span className="dot-pulse"></span> Industrial Engineering Cell
           </div>
           <h1 className="hero-main-title">
-            <span className="reveal-box">Reshaping the</span> <br/>
-            <span className="reveal-box accent">Digital Future.</span>
+            <span className="reveal-box">We Build Digital Solutions</span> <br />
+            <span className="reveal-box accent">That Grow Your Business.</span>
           </h1>
           <p className="hero-main-subtitle">
-            Premium consultancy and next-generation engineering tailored for modern industry demands.
+            From high-performing websites and mobile apps to smart AI solutions, we deliver technology that gets results.
           </p>
           <div className="hero-actions">
-            <button className="btn-primary" onClick={() => navigate('/consultation')}>Start Consultation</button>
+            <button className="btn-primary" onClick={() => navigate('/consultation')}>Get a Free Proposal</button>
             <button className="btn-secondary" onClick={() => navigate('/services')}>Our Expertise</button>
           </div>
         </div>
@@ -53,8 +51,8 @@ export default function Hero() {
         {/* Right Side: Service Index (Unique HUD) */}
         <div className="hero-service-index">
           {excellenceBadges.map((badge, index) => (
-            <div 
-              key={badge.id} 
+            <div
+              key={badge.id}
               className="service-index-item"
               style={{ animationDelay: `${0.8 + (index * 0.1)}s` }}
             >

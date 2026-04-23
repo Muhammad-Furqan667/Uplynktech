@@ -30,9 +30,9 @@ export default function WhyChooseUs() {
     },
     {
       id: 4,
-      title: 'Talent Empowerment',
-      description: 'Our proprietary Academy programs forge incredible developers who build real-world systems.',
-      icon: FaBook
+      title: 'Client-First Approach',
+      description: 'Every project begins with understanding your goals. We build solutions tailored precisely to your business needs, not off-the-shelf templates.',
+      icon: FaTag
     },
     {
       id: 5,

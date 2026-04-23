@@ -3,145 +3,257 @@ import { useSEO } from '../hooks/useSEO'
 import { useNavigate } from 'react-router-dom'
 import '../styles/ServicesPage.css'
 import EngagementModels from '../components/EngagementModels'
-import { supabase } from '../lib/supabase'
-import { resolveIcon } from '../lib/icons'
-import { FiArrowRight, FiZap } from 'react-icons/fi'
+import WhyChooseUs from '../components/WhyChooseUs'
+import OurWork from '../components/OurWork'
+import Testimonials from '../components/Testimonials'
+import { FiArrowRight, FiZap, FiMonitor, FiSmartphone, FiPenTool, FiTrendingUp, FiCpu, FiCheckCircle, FiChevronDown, FiChevronUp } from 'react-icons/fi'
 
 export default function Services() {
   const navigate = useNavigate()
-  const [pillars, setPillars] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [openFaq, setOpenFaq] = useState(null)
 
   useSEO({
-    title: 'Strategic Digital Services - UPLYNK Tech | Elite B2B Engineering',
-    description: 'Explore UPLYNK Tech services: Core Engineering, Intelligent Automation, and Market Dominance strategies tailored for modern business growth.',
+    title: 'Expert Digital Services - UPLYNK Tech | Elite B2B Agency',
+    description: 'Grow your business with UPLYNK Tech services: Web Development, App Development, Graphic Design, Social Media Marketing, and AI Services.',
     canonical: 'https://uplynktech.com/services',
-    keywords: 'enterprise software, ai engineering, digital growth strategies, business automation, cloud infrastructure'
+    keywords: 'web development, app development, ai engineering, digital growth strategies, social media marketing, graphic design'
   })
 
-  useEffect(() => {
-    async function fetchServices() {
-      try {
-        const { data, error } = await supabase
-          .from('display_services')
-          .select('*')
-          .order('created_at', { ascending: true })
-
-        if (error) throw error
-        processServiceData(data)
-      } catch (err) {
-        console.error('Error fetching services:', err)
-      } finally {
-        setLoading(false)
-      }
+  // Data for the 5 core services
+  const coreServices = [
+    {
+      id: 'web',
+      icon: FiMonitor,
+      title: 'Web Development',
+      subtitle: 'Fast, secure, and beautiful websites.',
+      description: 'We build responsive websites and web applications designed to turn your visitors into loyal customers.',
+      target: '/consultation',
+      cta: 'Get a Web Quote',
+      deliverables: [
+        { title: 'Custom Websites', desc: 'Fully bespoke designs tailored to your brand.' },
+        { title: 'E-Commerce Portals', desc: 'Robust online stores built for scale.' },
+        { title: 'Web Applications', desc: 'Complex SaaS and B2B web tools.' }
+      ]
+    },
+    {
+      id: 'app',
+      icon: FiSmartphone,
+      title: 'App Development',
+      subtitle: 'Seamless mobile experiences.',
+      description: 'Custom iOS and Android mobile apps built to give your users an engaging and frictionless experience.',
+      target: '/consultation',
+      cta: 'Discuss Your App Idea',
+      deliverables: [
+        { title: 'iOS & Android Apps', desc: 'Native-feel applications for all devices.' },
+        { title: 'React Native', desc: 'Cross-platform apps for faster time-to-market.' },
+        { title: 'UI/UX Mobile Design', desc: 'Interfaces your users will love.' }
+      ]
+    },
+    {
+      id: 'design',
+      icon: FiPenTool,
+      title: 'Graphic Designing',
+      subtitle: 'Stunning visual identities.',
+      description: 'Stand out from the crowd with premium logos, brand identities, and digital designs.',
+      target: '/consultation',
+      cta: 'Revamp Your Brand',
+      deliverables: [
+        { title: 'Brand Identity', desc: 'Complete brand kits and guidelines.' },
+        { title: 'UI/UX Design', desc: 'Wireframes and high-fidelity mockups.' },
+        { title: 'Marketing Materials', desc: 'Social posts, banners, and print.' }
+      ]
+    },
+    {
+      id: 'smm',
+      icon: FiTrendingUp,
+      title: 'Social Media Marketing',
+      subtitle: 'Grow your audience and sales.',
+      description: 'Smart strategies and creative campaigns to dominate your niche online and boost revenue.',
+      target: '/consultation',
+      cta: 'Start Growing',
+      deliverables: [
+        { title: 'Content Strategy', desc: 'Data-driven content calendars.' },
+        { title: 'Paid Advertising', desc: 'High-ROI Meta and Google Ads.' },
+        { title: 'Community Management', desc: 'Engaging directly with your audience.' }
+      ]
+    },
+    {
+      id: 'ai',
+      icon: FiCpu,
+      title: 'AI Services',
+      subtitle: 'Automate tasks and scale up.',
+      description: 'Leverage custom Artificial Intelligence tailored to your business to automate workflows and save time.',
+      target: '/consultation',
+      cta: 'Explore AI Options',
+      deliverables: [
+        { title: 'Custom Chatbots', desc: 'Intelligent 24/7 customer support.' },
+        { title: 'Workflow Automation', desc: 'Connecting tools to remove manual tasks.' },
+        { title: 'Predictive Analytics', desc: 'Using your data to forecast trends.' }
+      ]
     }
+  ]
 
-    const processServiceData = (data) => {
-      if (!data) return
-      // Map backend 'capabilities' to frontend 'services' key for backward compatibility
-      const formattedData = data.map(item => ({
-        ...item,
-        target: '/consultation', // Default target
-        cta: item.cta_title || `Learn More about ${item.title}`,
-        services: item.capabilities || [] // Map JSONB capabilities to the list
-      }))
-      setPillars(formattedData)
-    }
-
-    fetchServices()
-
-    // Realtime Subscription
-    const channel = supabase
-      .channel('services-realtime')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'display_services'
-        },
-        async (payload) => {
-          console.log('Realtime Service Update:', payload)
-          const { data } = await supabase
-            .from('display_services')
-            .select('*')
-            .order('created_at', { ascending: true })
-          processServiceData(data)
-        }
-      )
-      .subscribe()
-
-    return () => {
-      supabase.removeChannel(channel)
-    }
-  }, [])
+  const faqs = [
+    { q: "How long does a typical project take?", a: "Timelines depend entirely on the scope of the project. A standard website might take 4-6 weeks, while a custom mobile app could take 3-4 months. We provide clear Gantt charts before we write any code." },
+    { q: "Do you offer post-launch support?", a: "Absolutely. We believe in partnerships, not one-off transactions. We offer maintenance retainers, marketing campaigns, and continuous feature development after the initial launch." },
+    { q: "How does pricing work?", a: "We operate on both fixed-price project models (best for well-defined scopes) and time-and-materials retainers (best for agile startups and ongoing marketing). We will recommend the best fit during our consultation." }
+  ]
 
   return (
-    <section className="services-page">
+    <section className="services-page" style={{ paddingBottom: '80px' }}>
+      
+      {/* 1. Hero Section */}
       <div className="services-hero">
-        <div className="hero-content">
-          <p className="services-eyebrow">Technical Supremacy</p>
-          <h1 className="services-title">Specialized B2B<br />Capabilities.</h1>
-          <p className="services-subtitle">
-            UPLYNK provides elite, full-lifecycle digital transformations—from generative AI architecture to award-winning creative design—to empower modern enterprises.
+        <div className="hero-content" style={{ textAlign: 'center', maxWidth: '900px', margin: '0 auto' }}>
+          <p className="services-eyebrow">Technical & Creative Supremacy</p>
+          <h1 className="services-title" style={{ fontSize: '4.5rem', marginBottom: '1.5rem' }}>We Build Digital Solutions<br />That Grow Your Business.</h1>
+          <p className="services-subtitle" style={{ margin: '0 auto 2.5rem', fontSize: '1.25rem' }}>
+            We design, build, and market high-performing websites, mobile apps, and custom AI tools that turn your visitors into loyal customers.
           </p>
+          <button className="big-consultation-btn" onClick={() => navigate('/consultation')} style={{ margin: '0 auto' }}>
+            Get Your Free Proposal <FiArrowRight />
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Trust Banner */}
+      <div style={{ background: 'var(--bg-secondary)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '2rem' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '2rem' }}>
+          {['🚀 99.9% Uptime SLA', '⭐ 5-Star B2B Rated', '🔒 Enterprise Security', '🤝 Dedicated Project Managers'].map((stat, i) => (
+            <div key={i} style={{ color: 'var(--text-secondary)', fontWeight: 'bold', letterSpacing: '1px' }}>{stat}</div>
+          ))}
+        </div>
+      </div>
+
+      {/* 3. Problems We Solve */}
+      <div style={{ padding: '8rem 2rem', maxWidth: '1400px', margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <p className="services-eyebrow">Why You Are Here</p>
+          <h2 style={{ fontSize: '3rem', color: 'var(--text-primary)' }}>Are you facing these blockades?</h2>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+          {[
+            { title: "Slow & Outdated Website", desc: "Your site is costing you clients because it functions poorly on mobile and takes seconds to load." },
+            { title: "Manual Redundant Tasks", desc: "Your team is wasting hours doing data entry or customer support instead of acting on high-value strategy." },
+            { title: "Low Conversion Rates", desc: "You get traffic, but nobody buys. Your web presence lacks the trust markers and UX required to close a sale." }
+          ].map((problem, idx) => (
+            <div key={idx} style={{ background: 'var(--bg-secondary)', padding: '3rem 2rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+              <div style={{ color: '#ef4444', fontSize: '2rem', marginBottom: '1rem' }}>⚠️</div>
+              <h3 style={{ color: 'var(--text-primary)', fontSize: '1.5rem', marginBottom: '1rem' }}>{problem.title}</h3>
+              <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>{problem.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. Our Services Breakdown (Modified grid layout with Alternating Z-Pattern feel on desktop possible via flex, but grid is safer) */}
+      <div style={{ background: 'var(--bg-secondary)', padding: '2rem 0' }}>
+        <div className="services-pillars-grid">
+          {coreServices.map((service) => {
+            const Icon = service.icon
+            return (
+              <div key={service.id} id={service.id} className="service-pillar" style={{ background: 'var(--bg-primary)', padding: '3rem', borderRadius: '16px', border: '1px solid var(--border-color)', transition: 'transform 0.3s ease' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                <div className="pillar-header">
+                  <Icon className="pillar-main-icon" style={{ fontSize: '3rem', color: '#d4af37', marginBottom: '1.5rem' }} />
+                  <span className="pillar-subtitle">{service.subtitle}</span>
+                  <h2 className="pillar-title">{service.title}</h2>
+                  <p className="pillar-desc">{service.description}</p>
+                </div>
+                
+                <div className="pillar-items-list" style={{ marginTop: '2rem' }}>
+                  <h4 style={{ color: 'var(--text-primary)', marginBottom: '1rem', fontSize: '1.1rem' }}>What We Deliver</h4>
+                  {service.deliverables.map((del, idx) => (
+                    <div key={idx} className="pillar-service-item" style={{ gap: '1rem' }}>
+                      <div className="pillar-service-icon-box" style={{ background: 'transparent', border: 'none', width: 'auto', height: 'auto' }}>
+                        <FiCheckCircle style={{ color: '#10b981', fontSize: '1.2rem' }} />
+                      </div>
+                      <div className="pillar-service-info">
+                        <h3 className="pillar-service-title" style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{del.title}</h3>
+                        <p className="pillar-service-desc" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{del.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button 
+                  className="pillar-cta-btn" 
+                  onClick={() => navigate(service.target)}
+                  style={{ marginTop: '2rem', width: '100%' }}
+                >
+                  {service.cta} <FiArrowRight />
+                </button>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* 5. Our Process */}
+      <div style={{ padding: '8rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <p className="services-eyebrow">How We Work</p>
+          <h2 style={{ fontSize: '3rem', color: 'var(--text-primary)' }}>A Clear Path to Production</h2>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          {[
+            { step: '01', title: 'Discover & Strategize', desc: 'We start with a free consultation to understand your business goals and map out a custom plan.' },
+            { step: '02', title: 'Design & Build', desc: 'Our engineers and designers work hand-in-hand to build your product, giving you transparent updates at every milestone.' },
+            { step: '03', title: 'Launch & Scale', desc: 'We deploy your project securely and provide continuous marketing support needed to help you scale.' },
+          ].map((item, idx) => (
+            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '3rem', background: 'var(--bg-secondary)', padding: '2rem 3rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+              <div style={{ fontSize: '4rem', fontWeight: '900', color: 'var(--border-color)' }}>{item.step}</div>
+              <div>
+                <h3 style={{ fontSize: '1.8rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>{item.title}</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 6. Why Choose Us (Imported Component) */}
+      <div id="service-why-choose-us">
+        <WhyChooseUs />
+      </div>
+
+      {/* 7. Portfolio (Imported Component) */}
+      <div id="portfolio">
+        <OurWork />
+      </div>
+
+      {/* 8. Testimonials (Imported Component) */}
+      <div id="testimonials">
+        <Testimonials />
+      </div>
+
+      {/* 9. FAQ Section */}
+      <div id="faqs" style={{ padding: '8rem 2rem', maxWidth: '800px', margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <p className="services-eyebrow">Got Questions?</p>
+          <h2 style={{ fontSize: '3rem', color: 'var(--text-primary)' }}>Frequently Asked Questions</h2>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {faqs.map((faq, idx) => (
+            <div key={idx} style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '8px', overflow: 'hidden' }}>
+              <button 
+                onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                style={{ width: '100%', padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', color: 'var(--text-primary)', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer', textAlign: 'left' }}
+              >
+                {faq.q}
+                {openFaq === idx ? <FiChevronUp /> : <FiChevronDown />}
+              </button>
+              {openFaq === idx && (
+                <div style={{ padding: '0 1.5rem 1.5rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 
 
-      {loading ? (
-        <div className="services-loading">
-          <div className="loader"></div>
-          <p>Syncing Technical Capabilities...</p>
-        </div>
-      ) : (
-        <div className="services-pillars-grid">
-          {pillars.map((pillar) => (
-            <div key={pillar.id} className="service-pillar">
-              <div className="pillar-header">
-                <span className="pillar-subtitle">{pillar.subtitle}</span>
-                <h2 className="pillar-title">{pillar.title}</h2>
-                <p className="pillar-desc">{pillar.description}</p>
-              </div>
-              
-              <div className="pillar-items-list">
-                {pillar.services.map((service, idx) => {
-                  const Icon = resolveIcon(service.icon)
-                  return (
-                    <div key={service.id || idx} className="pillar-service-item">
-                      <div className="pillar-service-icon-box">
-                        <Icon className="pillar-service-icon" />
-                      </div>
-                      <div className="pillar-service-info">
-                        <h3 className="pillar-service-title">{service.title}</h3>
-                        <p className="pillar-service-desc">{service.desc}</p>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-
-              <button 
-                className="pillar-cta-btn" 
-                onClick={() => navigate(pillar.target)}
-              >
-                {pillar.cta} <FiArrowRight />
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <EngagementModels />
-
-      <section className="services-final-cta">
-        <div className="final-cta-container">
-          <h2 className="final-cta-heading">Ready for your strategic session?</h2>
-          <button className="big-consultation-btn" onClick={() => navigate('/consultation')}>
-            Book a Consultation Meeting <FiZap />
-          </button>
-        </div>
-      </section>
+    
     </section>
   )
 }
