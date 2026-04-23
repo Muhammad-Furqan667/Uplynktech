@@ -26,7 +26,7 @@ const ProtectedRoute = ({ children, requireAdmin = false, allowedRoles = [] }) =
   }
 
   if (!user) {
-    return <Navigate to="/auth/login" state={{ from: location }} replace />
+    return <Navigate to="/login" state={{ from: location }} replace />
   }
 
   // If we require admin, we MUST wait for the profile sync to finish ONLY on first load

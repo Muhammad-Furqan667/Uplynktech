@@ -14,7 +14,6 @@ const Home = lazy(() => import("./pages/Home"));
 const Services = lazy(() => import("./pages/Services"));
 const Career = lazy(() => import("./pages/Career"));
 const Gallery = lazy(() => import("./pages/Gallery"));
-const Contact = lazy(() => import("./pages/Contact"));
 const AboutUsPage = lazy(() => import("./pages/AboutUsPage"));
 const Consultation = lazy(() => import("./pages/Consultation"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
@@ -115,7 +114,6 @@ function App() {
               <Route path="/services" element={<Services />} />
               <Route path="/career" element={<Career />} />
               <Route path="/gallery" element={<Gallery />} />
-              <Route path="/contact" element={<Contact />} />
               <Route path="/about" element={<AboutUsPage />} />
               <Route path="/consultation" element={<Consultation />} />
               <Route path="/services/:id" element={<ServiceDetail />} />
@@ -123,7 +121,7 @@ function App() {
               <Route path="/terms" element={<TermsOfService />} />
 
               {/* Auth Routes */}
-              <Route path="/auth/login" element={<Login />} />
+              <Route path="/login" element={<Login />} />
               <Route path="/signin" element={<Login />} />
 
               {/* ERP Routes (Protected) */}

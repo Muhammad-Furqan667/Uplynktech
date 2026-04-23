@@ -20,6 +20,7 @@ export default function Consultation() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    whatsapp: '',
     company: '',
     details: ''
   })
@@ -55,6 +56,7 @@ export default function Consultation() {
           message: formData.details,
           meta: {
             company: formData.company,
+            whatsapp: formData.whatsapp,
             lead_type: 'consult',
             lead_origin: sourceService ? `Service: ${sourceService}` : 'General Consultation'
           }
@@ -69,6 +71,7 @@ export default function Consultation() {
             lead: { 
               full_name: formData.name, 
               email: formData.email,
+              whatsapp: formData.whatsapp,
               company: formData.company,
               type: 'consult',
               origin: sourceService ? `Service: ${sourceService}` : 'General Consultation'
@@ -84,6 +87,7 @@ export default function Consultation() {
           .from('contact_leads')
           .update({ meta: { 
             company: formData.company, 
+            whatsapp: formData.whatsapp,
             lead_type: 'consult', 
             lead_origin: sourceService ? `Service: ${sourceService}` : 'General Consultation',
             smtp_failed: true,
@@ -154,6 +158,16 @@ export default function Consultation() {
                 </div>
               </div>
               <div className="form-group">
+                <label>WhatsApp Number *</label>
+                <input 
+                  type="tel" 
+                  value={formData.whatsapp} 
+                  onChange={e => updateField('whatsapp', e.target.value)} 
+                  required
+                  placeholder="e.g. +92 329 8650167"
+                />
+              </div>
+              <div className="form-group">
                 <label>Company / Organization *</label>
                 <input 
                   type="text" 
@@ -178,7 +192,7 @@ export default function Consultation() {
                 <button 
                   type="submit"
                   className="submit-consult-btn" 
-                  disabled={loading || !formData.name || !formData.email || !formData.company || !formData.details}
+                  disabled={loading || !formData.name || !formData.email || !formData.whatsapp || !formData.company || !formData.details}
                 >
                   {loading ? 'Transmitting Brief...' : 'Book Strategic Session'} <FiArrowRight />
                 </button>

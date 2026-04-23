@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import './Footer.css'
+import '../styles/components/Footer.css'
 import { Link, useLocation } from 'react-router-dom'
 import {
   FaInstagram,
   FaTiktok,
   FaLinkedin,
   FaWhatsapp,
-  FaEnvelope
+  FaEnvelope,
+  FaFacebook
 } from 'react-icons/fa'
 import { FiArrowRight } from 'react-icons/fi'
 
@@ -45,6 +46,9 @@ export default function Footer() {
             <a href="https://www.linkedin.com/in/uplynk-tech-4b29933b0/" target="_blank" rel="noreferrer" title="LinkedIn">
               <FaLinkedin />
             </a>
+            <a href="https://www.facebook.com/share/1EKZR7jCBF/" target="_blank" rel="noreferrer" title="Facebook">
+              <FaFacebook />
+            </a>
             <a href="https://instagram.com/uplynktech" target="_blank" rel="noreferrer" title="Instagram">
               <FaInstagram />
             </a>
@@ -76,8 +80,9 @@ export default function Footer() {
           <h4 className="footer-col-title">Company</h4>
           <ul>
             <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/services">Services</Link></li>
             <li><Link to="/about">Our Team</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/consultation">Contact</Link></li>
           </ul>
         </div>
 

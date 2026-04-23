@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
-import './OurWork.css'
-import { FaTimes, FaArrowRight } from 'react-icons/fa'
-import { FiLayers } from 'react-icons/fi'
+import { useState, useEffect, useRef } from 'react'
+import '../styles/components/OurWork.css'
+import { FaTimes, FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { FiLayers, FiArrowLeft, FiArrowRight as FiArrowRightIcon } from 'react-icons/fi'
 import { supabase } from '../lib/supabase'
 import { resolveImageUrl } from '../lib/utils'
 
@@ -10,6 +10,9 @@ export default function OurWork() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
+  const scrollRef = useRef(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
 
   useEffect(() => {
     async function fetchProjects() {
@@ -36,6 +39,75 @@ export default function OurWork() {
   const filteredProjects = selectedCategory === 'all' 
     ? projects 
     : projects.filter(project => project.category === selectedCategory)
+
+  // Animation logic
+  useEffect(() => {
+    if (loading) return
+
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-active')
+        }
+      })
+    }, observerOptions)
+
+    const cards = document.querySelectorAll('.project-editorial-card')
+    cards.forEach(card => observer.observe(card))
+
+    return () => observer.disconnect()
+  }, [loading, filteredProjects])
+
+  // Slider controls
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = window.innerWidth > 768 ? 450 : 320
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      })
+    }
+  }
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
+      setCanScrollLeft(scrollLeft > 10)
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10)
+    }
+  }
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (el) {
+      el.addEventListener('scroll', checkScroll)
+      checkScroll()
+      return () => el.removeEventListener('scroll', checkScroll)
+    }
+  }, [loading, filteredProjects])
+
+  // Auto-loop logic
+  useEffect(() => {
+    if (loading || filteredProjects.length < 2) return
+
+    const interval = setInterval(() => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
+        if (scrollLeft >= scrollWidth - clientWidth - 10) {
+          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' })
+        } else {
+          scroll('right')
+        }
+      }
+    }, 5000) // 5 seconds interval
+
+    return () => clearInterval(interval)
+  }, [loading, filteredProjects])
 
   return (
     <section className="our-work">
@@ -65,16 +137,34 @@ export default function OurWork() {
               ))}
             </div>
 
-            <div className="projects-editorial-grid">
-              {filteredProjects.map((project) => (
-                <div
-                  key={project.id}
-                  className="project-editorial-card"
-                  onClick={() => setSelectedProject(project)}
+            <div className="slider-controls-wrapper">
+              <div className="slider-arrows">
+                <button 
+                  className={`slider-arrow-btn ${!canScrollLeft ? 'disabled' : ''}`} 
+                  onClick={() => scroll('left')}
+                  disabled={!canScrollLeft}
                 >
+                  <FiArrowLeft />
+                </button>
+                <button 
+                  className={`slider-arrow-btn ${!canScrollRight ? 'disabled' : ''}`} 
+                  onClick={() => scroll('right')}
+                  disabled={!canScrollRight}
+                >
+                  <FiArrowRightIcon />
+                </button>
+              </div>
+
+              <div className="projects-editorial-grid" ref={scrollRef}>
+                {filteredProjects.map((project) => (
+                  <div
+                    key={project.id}
+                    className="project-editorial-card reveal-item"
+                    onClick={() => setSelectedProject(project)}
+                  >
                   <div className="project-image-box" style={{ overflow: 'hidden' }}>
                     {project.image ? (
-                        <img src={resolveImageUrl(project.image)} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <img src={resolveImageUrl(project.image)} alt={project.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
                         <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-secondary)', color: 'var(--text-secondary)' }}><FiLayers size={40} /></div>
                     )}
@@ -93,6 +183,7 @@ export default function OurWork() {
                   </div>
                 </div>
               ))}
+              </div>
             </div>
           </>
         )}

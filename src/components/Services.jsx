@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import './Services.css'
+import '../styles/components/Services.css'
 import { FiMonitor, FiSmartphone, FiPenTool, FiTrendingUp, FiCpu, FiArrowRight } from 'react-icons/fi'
 
 export default function Services() {

@@ -1,4 +1,4 @@
-import './WhyChooseUs.css'
+import '../styles/components/WhyChooseUs.css'
 import {
   FaUsers,
   FaLightbulb,

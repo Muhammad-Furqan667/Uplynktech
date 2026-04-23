@@ -1,17 +1,8 @@
 User-agent: *
 Allow: /
-Allow: /services
-Allow: /team
-Allow: /career
-Allow: /courses
-Allow: /gallery
-Allow: /contact
-
-Disallow: /admin
-Disallow: /private
-Disallow: /*.json$
+Disallow: /erp/
+Disallow: /auth/
+Disallow: /signin/
+Disallow: /login/
 
 Sitemap: https://uplynktech.com/sitemap.xml
-
-# Crawl delay to prevent excessive server load
-Crawl-delay: 1

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { FiMail, FiSend, FiInbox, FiExternalLink, FiUser, FiInfo, FiBook } from 'react-icons/fi'
+import { FiMail, FiSend, FiInbox, FiExternalLink, FiUser, FiInfo, FiBook, FiPhone } from 'react-icons/fi'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import './Mail.css'
@@ -431,6 +431,13 @@ const Mail = () => {
                         <div className="lead-item">
                            <FiExternalLink />
                            <span>Company: {lead.company || lead.meta.company}</span>
+                        </div>
+                      )}
+
+                      {lead.meta?.whatsapp && (
+                        <div className="lead-item">
+                          <FiPhone />
+                          <span>WhatsApp: {lead.meta.whatsapp}</span>
                         </div>
                       )}
                       

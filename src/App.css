@@ -67,6 +67,19 @@
   }
 }
 
+@media (max-width: 480px) {
+  .golden-back-btn {
+    top: 85px;
+    left: 15px;
+    padding: 8px 14px;
+    font-size: 0.6rem;
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+  }
+  .golden-back-btn svg {
+    font-size: 0.9rem;
+  }
+}
+
 /* Rate Limit Notice */
 .rate-limit-notice {
   background: rgba(239, 68, 68, 0.1);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
-import './WhatsAppButton.css';
+import '../styles/components/WhatsAppButton.css';
 
 const WhatsAppButton = () => {
   const location = useLocation();

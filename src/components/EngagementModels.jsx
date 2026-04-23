@@ -1,4 +1,4 @@
-import './EngagementModels.css'
+import '../styles/components/EngagementModels.css'
 import { FiUsers, FiBox, FiActivity } from 'react-icons/fi'
 
 export default function EngagementModels() {

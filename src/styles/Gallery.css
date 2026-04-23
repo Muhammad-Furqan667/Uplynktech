@@ -284,3 +284,14 @@
   .gallery-subtitle { font-size: 1.2rem; }
   .elite-event-grid.mini { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 480px) {
+  .gallery-hero { padding: 140px 0 60px; margin-bottom: 4rem; }
+  .gallery-title { font-size: 2.2rem; letter-spacing: -1px; margin-bottom: 1.5rem; }
+  .gallery-subtitle { font-size: 1rem; }
+  .hero-inner, .gallery-container { padding: 0 1.2rem; }
+  .timeline-headline { font-size: 1.8rem; padding-left: 1.2rem; margin-bottom: 2.5rem; }
+  .event-body { padding: 2rem 1.5rem; }
+  .event-name { font-size: 1.5rem; }
+  .event-metas { gap: 1.5rem; margin-bottom: 2rem; }
+}

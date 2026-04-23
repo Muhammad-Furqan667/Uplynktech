@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { FiCpu, FiLayers, FiZap, FiTarget } from 'react-icons/fi'
-import './Hero.css'
+import '../styles/components/Hero.css'
 
 export default function Hero() {
   const navigate = useNavigate()
@@ -32,9 +32,6 @@ export default function Hero() {
 
         {/* Left Side: Strategic Value Prop */}
         <div className="hero-text-content">
-          <div className="hero-badge-elite">
-            <span className="dot-pulse"></span> Industrial Engineering Cell
-          </div>
           <h1 className="hero-main-title">
             <span className="reveal-box">We Build Digital Solutions</span> <br />
             <span className="reveal-box accent">That Grow Your Business.</span>

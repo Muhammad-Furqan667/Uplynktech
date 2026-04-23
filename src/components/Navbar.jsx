@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { FiMenu, FiX, FiChevronDown, FiTerminal, FiCpu, FiLayout, FiBook, FiAward, FiStar, FiMonitor, FiLayers, FiZap, FiUser, FiGlobe, FiPenTool, FiMoon, FiSun } from 'react-icons/fi'
 import { useAuth } from '../erp/contexts/AuthContext'
-import './Navbar.css'
+import '../styles/components/Navbar.css'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -25,7 +25,9 @@ export default function Navbar() {
 
   // Apply dark mode class to body globally, but NOT on ERP or Auth pages
   useEffect(() => {
-    const isErpOrAuth = location.pathname.startsWith('/erp') || location.pathname.startsWith('/auth')
+    const isErpOrAuth = location.pathname.startsWith('/erp') || 
+                        location.pathname === '/login' || 
+                        location.pathname === '/signin'
     
     if (isErpOrAuth) {
       document.body.classList.remove('dark-mode')

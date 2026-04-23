@@ -116,10 +116,15 @@
 
 @media (max-width: 768px) {
   .why-choose-us { padding: 5rem 1.5rem; }
-  .why-choose-heading { font-size: 2.8rem; }
-  .features-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .why-choose-heading { font-size: 2.5rem; }
+  .features-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .feature-card { text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .feature-icon-wrapper { margin-left: auto; margin-right: auto; }
 }
 
 @media (max-width: 480px) {
-  .why-choose-heading { font-size: 2.2rem; }
+  .why-choose-us { padding: 4rem 1.2rem; }
+  .why-choose-heading { font-size: 2rem; }
+  .why-choose-subtitle { font-size: 1.1rem; }
+  .feature-card { padding: 2rem 1.5rem; }
 }

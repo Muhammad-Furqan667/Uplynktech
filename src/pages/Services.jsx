@@ -6,11 +6,18 @@ import EngagementModels from '../components/EngagementModels'
 import WhyChooseUs from '../components/WhyChooseUs'
 import OurWork from '../components/OurWork'
 import Testimonials from '../components/Testimonials'
-import { FiArrowRight, FiZap, FiMonitor, FiSmartphone, FiPenTool, FiTrendingUp, FiCpu, FiCheckCircle, FiChevronDown, FiChevronUp } from 'react-icons/fi'
+import { FiArrowRight, FiZap, FiMonitor, FiSmartphone, FiPenTool, FiTrendingUp, FiCpu, FiCheckCircle, FiChevronDown, FiChevronUp, FiServer, FiStar, FiShield, FiUsers } from 'react-icons/fi'
 
 export default function Services() {
   const navigate = useNavigate()
   const [openFaq, setOpenFaq] = useState(null)
+  const [expandedServices, setExpandedServices] = useState([])
+
+  const toggleService = (id) => {
+    setExpandedServices(prev => 
+      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+    )
+  }
 
   useSEO({
     title: 'Expert Digital Services - UPLYNK Tech | Elite B2B Agency',
@@ -93,6 +100,16 @@ export default function Services() {
     }
   ]
 
+  const trustStats = [
+    { icon: FiServer, text: '99.9% Uptime SLA', color: '#10b981' },
+    { icon: FiStar, text: '5-Star B2B Rated', color: '#f59e0b' },
+    { icon: FiShield, text: 'Enterprise Security', color: '#0ea5e9' },
+    { icon: FiUsers, text: 'Dedicated Project Managers', color: '#7c3aed' }
+  ]
+
+  // Double the stats for a seamless marquee loop
+  const loopedStats = [...trustStats, ...trustStats, ...trustStats]
+
   const faqs = [
     { q: "How long does a typical project take?", a: "Timelines depend entirely on the scope of the project. A standard website might take 4-6 weeks, while a custom mobile app could take 3-4 months. We provide clear Gantt charts before we write any code." },
     { q: "Do you offer post-launch support?", a: "Absolutely. We believe in partnerships, not one-off transactions. We offer maintenance retainers, marketing campaigns, and continuous feature development after the initial launch." },
@@ -104,84 +121,99 @@ export default function Services() {
       
       {/* 1. Hero Section */}
       <div className="services-hero">
-        <div className="hero-content" style={{ textAlign: 'center', maxWidth: '900px', margin: '0 auto' }}>
+        <div className="hero-content">
           <p className="services-eyebrow">Technical & Creative Supremacy</p>
-          <h1 className="services-title" style={{ fontSize: '4.5rem', marginBottom: '1.5rem' }}>We Build Digital Solutions<br />That Grow Your Business.</h1>
-          <p className="services-subtitle" style={{ margin: '0 auto 2.5rem', fontSize: '1.25rem' }}>
+          <h1 className="services-title">We Build Digital Solutions<br />That Grow Your Business.</h1>
+          <p className="services-subtitle">
             We design, build, and market high-performing websites, mobile apps, and custom AI tools that turn your visitors into loyal customers.
           </p>
-          <button className="big-consultation-btn" onClick={() => navigate('/consultation')} style={{ margin: '0 auto' }}>
+          <button className="big-consultation-btn" onClick={() => navigate('/consultation')}>
             Get Your Free Proposal <FiArrowRight />
           </button>
         </div>
       </div>
 
-      {/* 2. Trust Banner */}
-      <div style={{ background: 'var(--bg-secondary)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '2rem' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '2rem' }}>
-          {['🚀 99.9% Uptime SLA', '⭐ 5-Star B2B Rated', '🔒 Enterprise Security', '🤝 Dedicated Project Managers'].map((stat, i) => (
-            <div key={i} style={{ color: 'var(--text-secondary)', fontWeight: 'bold', letterSpacing: '1px' }}>{stat}</div>
-          ))}
+      {/* 2. Trust Banner Marquee */}
+      <div className="services-trust-marquee">
+        <div className="marquee-fade-left" />
+        <div className="marquee-fade-right" />
+        <div className="trust-marquee-track">
+          {loopedStats.map((stat, i) => {
+            const StatIcon = stat.icon
+            return (
+              <div key={i} className="trust-stat-item">
+                <StatIcon className="trust-stat-icon" style={{ color: stat.color }} />
+                <span className="trust-stat-text">{stat.text}</span>
+              </div>
+            )
+          })}
         </div>
       </div>
 
       {/* 3. Problems We Solve */}
-      <div style={{ padding: '8rem 2rem', maxWidth: '1400px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+      <div className="problems-section">
+        <div className="section-header-center">
           <p className="services-eyebrow">Why You Are Here</p>
-          <h2 style={{ fontSize: '3rem', color: 'var(--text-primary)' }}>Are you facing these blockades?</h2>
+          <h2>Are you facing these blockades?</h2>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+        <div className="problems-grid">
           {[
             { title: "Slow & Outdated Website", desc: "Your site is costing you clients because it functions poorly on mobile and takes seconds to load." },
             { title: "Manual Redundant Tasks", desc: "Your team is wasting hours doing data entry or customer support instead of acting on high-value strategy." },
             { title: "Low Conversion Rates", desc: "You get traffic, but nobody buys. Your web presence lacks the trust markers and UX required to close a sale." }
           ].map((problem, idx) => (
-            <div key={idx} style={{ background: 'var(--bg-secondary)', padding: '3rem 2rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <div style={{ color: '#ef4444', fontSize: '2rem', marginBottom: '1rem' }}>⚠️</div>
-              <h3 style={{ color: 'var(--text-primary)', fontSize: '1.5rem', marginBottom: '1rem' }}>{problem.title}</h3>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>{problem.desc}</p>
+            <div key={idx} className="problem-card">
+              <div className="problem-icon">⚠️</div>
+              <h3>{problem.title}</h3>
+              <p>{problem.desc}</p>
             </div>
           ))}
         </div>
       </div>
 
-      {/* 4. Our Services Breakdown (Modified grid layout with Alternating Z-Pattern feel on desktop possible via flex, but grid is safer) */}
-      <div style={{ background: 'var(--bg-secondary)', padding: '2rem 0' }}>
+      {/* 4. Our Services Breakdown */}
+      <div className="services-pillars-section">
         <div className="services-pillars-grid">
           {coreServices.map((service) => {
             const Icon = service.icon
             return (
-              <div key={service.id} id={service.id} className="service-pillar" style={{ background: 'var(--bg-primary)', padding: '3rem', borderRadius: '16px', border: '1px solid var(--border-color)', transition: 'transform 0.3s ease' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+              <div key={service.id} id={service.id} className={`service-pillar ${expandedServices.includes(service.id) ? 'is-expanded' : ''}`} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                 <div className="pillar-header">
                   <Icon className="pillar-main-icon" style={{ fontSize: '3rem', color: '#d4af37', marginBottom: '1.5rem' }} />
                   <span className="pillar-subtitle">{service.subtitle}</span>
-                  <h2 className="pillar-title">{service.title}</h2>
+                  <h2 className="pillar-title" style={{ marginBottom: '1rem' }}>{service.title}</h2>
                   <p className="pillar-desc">{service.description}</p>
                 </div>
-                
-                <div className="pillar-items-list" style={{ marginTop: '2rem' }}>
-                  <h4 style={{ color: 'var(--text-primary)', marginBottom: '1rem', fontSize: '1.1rem' }}>What We Deliver</h4>
-                  {service.deliverables.map((del, idx) => (
-                    <div key={idx} className="pillar-service-item" style={{ gap: '1rem' }}>
-                      <div className="pillar-service-icon-box" style={{ background: 'transparent', border: 'none', width: 'auto', height: 'auto' }}>
-                        <FiCheckCircle style={{ color: '#10b981', fontSize: '1.2rem' }} />
-                      </div>
-                      <div className="pillar-service-info">
-                        <h3 className="pillar-service-title" style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{del.title}</h3>
-                        <p className="pillar-service-desc" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{del.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
 
-                <button 
-                  className="pillar-cta-btn" 
-                  onClick={() => navigate(service.target)}
-                  style={{ marginTop: '2rem', width: '100%' }}
-                >
-                  {service.cta} <FiArrowRight />
-                </button>
+                <div className="pillar-expand-toggle" onClick={() => toggleService(service.id)}>
+                  <span>{expandedServices.includes(service.id) ? 'Show Less' : 'View Details'}</span>
+                  {expandedServices.includes(service.id) ? <FiChevronUp /> : <FiChevronDown />}
+                </div>
+                
+                <div className={`pillar-collapsible-content ${expandedServices.includes(service.id) ? 'show' : ''}`}>
+                  <div className="pillar-items-list" style={{ marginTop: '2rem' }}>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '1rem', fontSize: '1.1rem' }}>What We Deliver</h4>
+                    {service.deliverables.map((del, idx) => (
+                      <div key={idx} className="pillar-service-item" style={{ gap: '1rem' }}>
+                        <div className="pillar-service-icon-box" style={{ background: 'transparent', border: 'none', width: 'auto', height: 'auto' }}>
+                          <FiCheckCircle style={{ color: '#10b981', fontSize: '1.2rem' }} />
+                        </div>
+                        <div className="pillar-service-info">
+                          <h3 className="pillar-service-title" style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{del.title}</h3>
+                          <p className="pillar-service-desc" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{del.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button 
+                    className="pillar-cta-btn" 
+                    onClick={() => navigate(service.target)}
+                    style={{ marginTop: '2rem', width: '100%' }}
+                  >
+                    {service.cta} <FiArrowRight />
+                  </button>
+                </div>
               </div>
             )
           })}
@@ -189,22 +221,22 @@ export default function Services() {
       </div>
 
       {/* 5. Our Process */}
-      <div style={{ padding: '8rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+      <div className="process-section">
+        <div className="section-header-center">
           <p className="services-eyebrow">How We Work</p>
-          <h2 style={{ fontSize: '3rem', color: 'var(--text-primary)' }}>A Clear Path to Production</h2>
+          <h2>A Clear Path to Production</h2>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div className="process-steps">
           {[
             { step: '01', title: 'Discover & Strategize', desc: 'We start with a free consultation to understand your business goals and map out a custom plan.' },
             { step: '02', title: 'Design & Build', desc: 'Our engineers and designers work hand-in-hand to build your product, giving you transparent updates at every milestone.' },
             { step: '03', title: 'Launch & Scale', desc: 'We deploy your project securely and provide continuous marketing support needed to help you scale.' },
           ].map((item, idx) => (
-            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '3rem', background: 'var(--bg-secondary)', padding: '2rem 3rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <div style={{ fontSize: '4rem', fontWeight: '900', color: 'var(--border-color)' }}>{item.step}</div>
-              <div>
-                <h3 style={{ fontSize: '1.8rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>{item.title}</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>{item.desc}</p>
+            <div key={idx} className="process-card">
+              <div className="process-number">{item.step}</div>
+              <div className="process-content">
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
               </div>
             </div>
           ))}

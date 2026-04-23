@@ -119,6 +119,13 @@
               box-shadow 0.3s ease;
 }
 
+@media (max-width: 480px) {
+  .offering-card {
+    width: 280px;
+    padding: 28px 24px;
+  }
+}
+
 .offering-card::before {
   content: '';
   position: absolute;

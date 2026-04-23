@@ -185,7 +185,24 @@
 }
 
 @media (max-width: 768px) {
-  .professional-footer { padding: 4rem 1.5rem 2rem; }
-  .footer-top-grid { grid-template-columns: 1fr; gap: 3rem; }
-  .footer-bottom-bar { flex-direction: column; text-align: center; }
+  .professional-footer { padding: 4rem 1.5rem 2rem; text-align: center; }
+  .footer-top-grid { 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 3rem 1rem; 
+  }
+  .footer-brand-col, 
+  .footer-newsletter-col { 
+    grid-column: span 2; 
+    align-items: center; 
+  }
+  .footer-links-col {
+    text-align: center;
+  }
+  .footer-links-col ul {
+    align-items: center;
+  }
+  .footer-brand-desc, .footer-newsletter-desc { margin-left: auto; margin-right: auto; }
+  .footer-socials { justify-content: center; }
+  .footer-subscribe-form { max-width: 300px; margin: 0 auto; }
+  .footer-bottom-bar { flex-direction: column; gap: 1.5rem; }
 }

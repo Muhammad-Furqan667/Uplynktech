@@ -1,0 +1,98 @@
+.contact-cta {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 10rem 2rem;
+  position: relative;
+}
+
+.cta-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.cta-massive-heading {
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -3px;
+  margin-bottom: 4rem;
+  color: var(--bg-primary);
+}
+
+.cta-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 3rem;
+}
+
+.cta-subtext {
+  font-size: 1.5rem;
+  color: #a0a0a0;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.cta-trigger-btn {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: none;
+  padding: 1.5rem 3rem;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+body.dark-mode .contact-cta {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+body.dark-mode .cta-massive-heading {
+  color: #ffffff;
+}
+
+body.dark-mode .cta-trigger-btn {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.cta-trigger-btn:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.button-arrow {
+  transition: transform 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.cta-trigger-btn:hover .button-arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 1024px) {
+  .cta-massive-heading { font-size: 5rem; }
+}
+
+@media (max-width: 768px) {
+  .contact-cta { padding: 6rem 1.5rem; }
+  .cta-massive-heading { font-size: 4rem; margin-bottom: 2.5rem; letter-spacing: -2px; }
+  .cta-action-row { flex-direction: column; align-items: flex-start; gap: 3rem; }
+  .cta-trigger-btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .cta-massive-heading { font-size: 3rem; }
+  .cta-subtext { font-size: 1.1rem; }
+}

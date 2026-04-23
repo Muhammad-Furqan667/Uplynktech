@@ -382,11 +382,19 @@ body.dark-mode .simple-dropdown {
 }
 
 @media (max-width: 768px) {
-  .navbar-container { padding: 0 1.5rem; }
-  .brand-logo { width: 35px; height: 35px; font-size: 18px; }
-  .brand-text { font-size: 14px; }
+  .navbar-container { padding: 0 1.2rem; }
+  .brand-logo-img { height: 32px; }
+  .brand-text { font-size: 13px; letter-spacing: 1px; }
   
   /* Hide Desktop, Show Mobile */
   .nav-menu { display: none; }
   .hamburger-btn { display: flex; }
+}
+
+@media (max-width: 480px) {
+  .navbar { height: 70px; }
+  .navbar-container { padding: 0 1rem; }
+  .brand-logo-img { height: 28px; }
+  .brand-text { font-size: 11px; letter-spacing: 0.5px; }
+  .hamburger-btn { font-size: 24px; }
 }

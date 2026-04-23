@@ -80,14 +80,65 @@
   border-bottom: 2px solid var(--text-primary);
 }
 
-/* Editorial Grid Layout */
+/* Slider Wrapper & Controls */
+.slider-controls-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.slider-arrows {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.slider-arrow-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.slider-arrow-btn:hover:not(:disabled) {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+}
+
+.slider-arrow-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Editorial Grid Layout - Converted to Slider */
 .projects-editorial-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 4rem 3rem;
+  display: flex;
+  gap: 3rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  padding-bottom: 2rem;
+  padding-top: 1rem;
+}
+
+.projects-editorial-grid::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
 .project-editorial-card {
+  min-width: 450px;
+  flex: 0 0 450px;
+  scroll-snap-align: start;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -262,17 +313,91 @@
   cursor: pointer;
 }
 
+/* Reveal Animations */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.reveal-item.reveal-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @media (max-width: 1024px) {
   .our-work-heading { font-size: 3.2rem; }
   .category-filter { gap: 1.5rem; }
 }
 
 @media (max-width: 768px) {
-  .our-work { padding: 5rem 1.5rem; }
-  .projects-editorial-grid { grid-template-columns: 1fr; gap: 4rem; }
-  .our-work-heading { font-size: 2.8rem; }
-  .modal-case-header { padding: 3rem 2rem 1.5rem; }
-  .modal-case-body { padding: 2rem 2rem 3rem; }
-  .modal-case-image { height: 250px; }
-  .modal-case-title { font-size: 2rem; }
+  .our-work { padding: 4rem 0; overflow: hidden; }
+  .slider-arrows { display: none; }
+  .our-work-header { padding: 0 1.5rem; text-align: left; margin-bottom: 2.5rem; }
+  .our-work-heading { font-size: 2.2rem; margin-bottom: 0.8rem; }
+  .our-work-subtitle { font-size: 1rem; margin: 0; text-align: left; }
+  
+  .category-filter { 
+    justify-content: flex-start; 
+    flex-wrap: nowrap; 
+    overflow-x: auto; 
+    padding: 0 1.5rem 0.5rem;
+    margin-bottom: 2rem;
+    gap: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .filter-text-btn { font-size: 12px; padding-bottom: 0.8rem; white-space: nowrap; }
+  
+  .projects-editorial-grid { 
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1.2rem;
+    padding: 0 1.5rem 3rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .project-editorial-card { 
+    min-width: 280px;
+    width: 80vw;
+    scroll-snap-align: start;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  }
+
+  .project-image-box { 
+    margin-bottom: 1.2rem; 
+    border-radius: 8px;
+    aspect-ratio: 4 / 3;
+  }
+
+  .project-editorial-title { font-size: 1.4rem; margin-bottom: 0.5rem; }
+  .project-editorial-desc { font-size: 0.95rem; line-height: 1.5; margin-bottom: 1.2rem; }
+  
+  .project-editorial-link {
+    background: var(--bg-primary);
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+  }
+
+  /* Swipe Hint */
+  .projects-editorial-grid::after {
+    content: '';
+    min-width: 1.5rem;
+    display: block;
+  }
+
+  /* Modal Mobile Refinement */
+  .modal-case-content { width: 95%; margin: 0 auto; }
+  .modal-case-header { padding: 2.5rem 1.2rem 1rem; }
+  .modal-case-title { font-size: 1.6rem; }
+  .modal-case-body { padding: 1.5rem 1.2rem 2.5rem; }
+  .modal-case-description { font-size: 1rem; line-height: 1.6; margin-bottom: 2rem; }
+  .modal-case-image { height: 180px; }
+  .modal-close { top: 1rem; right: 1rem; font-size: 20px; }
 }

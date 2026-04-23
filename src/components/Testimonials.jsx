@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import './Testimonials.css'
+import '../styles/components/Testimonials.css'
 
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState([])
@@ -39,6 +39,29 @@ export default function Testimonials() {
     }
   }, [])
 
+  // Animation logic
+  useEffect(() => {
+    if (loading) return
+
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-active')
+        }
+      })
+    }, observerOptions)
+
+    const cards = document.querySelectorAll('.testimonial-card')
+    cards.forEach(card => observer.observe(card))
+
+    return () => observer.disconnect()
+  }, [loading, testimonials])
+
   if (loading && testimonials.length === 0) {
     return null // or a skeleton loader
   }
@@ -63,8 +86,7 @@ export default function Testimonials() {
           {testimonials.map((item, index) => (
             <div 
               key={item.id} 
-              className="testimonial-card"
-              style={{ animationDelay: `${index * 0.2}s` }}
+              className="testimonial-card reveal-item"
             >
               <div className="quote-mark">"</div>
               <p className="testimonial-quote">
