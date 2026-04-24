@@ -3,10 +3,34 @@ import { supabase } from '../lib/supabase'
 import '../styles/components/Testimonials.css'
 
 export default function Testimonials() {
-  const [testimonials, setTestimonials] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [testimonials, setTestimonials] = useState([
+    {
+      id: 1,
+      author: 'Muhammad Bilal',
+      quote: 'Brother, UPLYNK did magic. My work was very slow, but they put AI and now it\'s super fast. MashAllah!',
+      title: 'Owner',
+      company: 'Bilal Textile'
+    },
+    {
+      id: 2,
+      author: 'Syed Ahmed Shah',
+      quote: 'Best team ever! They fixed my cloud and now no tension of website down. Heart is very happy!',
+      title: 'CEO',
+      company: 'Shah Tech Solutions'
+    },
+    {
+      id: 3,
+      author: 'Muneeb Kala',
+      quote: 'Yaar, their engineering is next level. They build it like it\'s their own work. Strongly recommend!',
+      title: 'Manager',
+      company: 'Kala & Co.'
+    }
+  ])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    // Database fetching is disabled to use local Pakistani-style testimonials as requested.
+    /*
     async function fetchTestimonials() {
       try {
         const { data, error } = await supabase
@@ -25,8 +49,10 @@ export default function Testimonials() {
     }
 
     fetchTestimonials()
+    */
 
     // Realtime subscription
+    /*
     const channel = supabase
       .channel('public:display_reviews')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'display_reviews' }, (payload) => {
@@ -37,6 +63,7 @@ export default function Testimonials() {
     return () => {
       supabase.removeChannel(channel)
     }
+    */
   }, [])
 
   // Animation logic
@@ -75,10 +102,10 @@ export default function Testimonials() {
       <div className="testimonials-container">
         
         <div className="testimonials-header">
-          <p className="testimonials-eyebrow">Social Proof</p>
-          <h2 className="testimonials-heading">Trusted by Industry Leaders</h2>
+          <p className="testimonials-eyebrow">Logon Ki Baat</p>
+          <h2 className="testimonials-heading">Barey Brands Ka Bharosa</h2>
           <p className="testimonials-subtitle">
-            Don't just take our word for it. Hear from the enterprise partners who trust us with their digital infrastructure.
+            Don't just believe us, see what our local brothers and big companies say about our work. 
           </p>
         </div>
 
